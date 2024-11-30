@@ -6,22 +6,20 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] Text PlayerOneScoreText;
     [SerializeField] Text PlayerTwoScoreText;
-    [SerializeField] int playerOneScore = 0;
-    [SerializeField] int playerTwoScore = 0;
     [SerializeField] float ballInitialMovementSpeed = 1;
-
     [SerializeField] Camera cam;
     [SerializeField] GameObject player1;
     [SerializeField] GameObject player2;
     [SerializeField] GameObject playerOneStar;
     [SerializeField] GameObject playerTwoStar;
-
     public GameObject ball;
     public Rigidbody2D ballRigidBody;
     float initialSpeed = 1f;
     Vector2 randomDirection;
     [SerializeField] Vector3 playerOneStartPos = new Vector3(7, 0, 0);
     [SerializeField] Vector3 playerTwoStartPos = new Vector3(-7, 0, 0);
+    private int playerOneScore = 0;
+    private int playerTwoScore = 0;
 
 
     void Start()
@@ -29,9 +27,9 @@ public class GameManager : MonoBehaviour
         ballRigidBody = ball.GetComponent<Rigidbody2D>();
         MoveBallInRandomDirection(ballInitialMovementSpeed);
     }
-    public void Goal(bool isPlayerOne)
+    public void Goal(bool isPlayerOne, int points)
     {
-        UpdateScore(isPlayerOne, 6);
+        UpdateScore(isPlayerOne, points);
         ResetPosition();
         StartCoroutine(ShakeCamera(0.4f, 0.08f));
         MoveBallInRandomDirection(ballInitialMovementSpeed);

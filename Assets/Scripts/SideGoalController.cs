@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GoalManager : MonoBehaviour
+public class SideGoalController : MonoBehaviour
 {
+
     GameManager gameManager;
     void Start()
     {
@@ -13,6 +14,6 @@ public class GoalManager : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Ball")
-            gameManager.Goal(isPlayerOneGoal);
+            gameManager.Goal(isPlayerOneGoal, 3);
     }
 }
