@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] Text PlayerOneScoreText;
+    [SerializeField] Text PlayerTwoScoreText;
     [SerializeField] int playerOneScore = 0;
     [SerializeField] int playerTwoScore = 0;
     [SerializeField] float ballInitialMovementSpeed = 1;
@@ -11,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] Camera cam;
     [SerializeField] GameObject player1;
     [SerializeField] GameObject player2;
+    [SerializeField] GameObject playerOneStar;
+    [SerializeField] GameObject playerTwoStar;
+
     public GameObject ball;
     public Rigidbody2D ballRigidBody;
     float initialSpeed = 1f;
@@ -26,10 +31,15 @@ public class GameManager : MonoBehaviour
     }
     public void Goal(bool isPlayerOne)
     {
-        UpdateScore(isPlayerOne);
+        UpdateScore(isPlayerOne, 6);
         ResetPosition();
         StartCoroutine(ShakeCamera(0.4f, 0.08f));
         MoveBallInRandomDirection(ballInitialMovementSpeed);
+    }
+    public void StarGoal(bool isPlayerOne)
+    {
+        UpdateScore(isPlayerOne, 1);
+        StartCoroutine(DeactivateForSeconds(1f, isPlayerOne));
     }
     private IEnumerator ShakeCamera(float duration, float magnitude)
     {
@@ -46,17 +56,17 @@ public class GameManager : MonoBehaviour
 
         cam.transform.localPosition = originalPosition;
     }
-    void UpdateScore(bool isPlayerOne)
+    void UpdateScore(bool isPlayerOne, int points)
     {
         if (isPlayerOne)
         {
-            playerTwoScore += 3;
-            Debug.Log("Player Two Score: " + playerTwoScore);
+            playerTwoScore += points;
+            PlayerTwoScoreText.text = ("Score Player 2 : " + playerTwoScore);
         }
         else
         {
-            playerOneScore += 3;
-            Debug.Log("Player One Score: " + playerOneScore);
+            playerOneScore += points;
+            PlayerOneScoreText.text = ("Score Player 1 : " + playerOneScore);
         }
 
     }
@@ -71,5 +81,19 @@ public class GameManager : MonoBehaviour
     {
         randomDirection = Random.insideUnitCircle.normalized;
         ballRigidBody.velocity = randomDirection * movementSpeed;
+    }
+    private IEnumerator DeactivateForSeconds(float seconds, bool isPlayerOne)
+    {
+        // Deactivate the game object
+        if (isPlayerOne)
+            playerOneStar.SetActive(false);
+        else
+            playerTwoStar.SetActive(false);
+        // Wait for the specified duration
+        yield return new WaitForSeconds(seconds);
+        if (isPlayerOne)
+            playerOneStar.SetActive(true);
+        else
+            playerTwoStar.SetActive(true);
     }
 }
