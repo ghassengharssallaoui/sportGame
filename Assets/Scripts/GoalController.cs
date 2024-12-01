@@ -12,7 +12,8 @@ public class GoalController : MonoBehaviour
     [SerializeField] bool isPlayerOneGoal;
     void OnTriggerEnter2D(Collider2D col)
     {
+
         if (col.gameObject.tag == "Ball")
-            gameManager.Goal(isPlayerOneGoal, 6);
+            gameManager.Goal(isPlayerOneGoal, 6, Vector2.zero, true);
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MiddleStarController : MonoBehaviour
+public class BongsController : MonoBehaviour
 {
     GameManager gameManager;
     [SerializeField] bool isPlayerOneStar;
@@ -12,6 +12,6 @@ public class MiddleStarController : MonoBehaviour
     }
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        gameManager.StarGoal(isPlayerOneStar);
+        gameManager.BongsGoal(isPlayerOneStar, this.gameObject);
     }
 }

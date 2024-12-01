@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SideGoalController : MonoBehaviour
+public class OversController : MonoBehaviour
 {
 
     GameManager gameManager;
+    [SerializeField] Vector2 ballResetPosition;
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
@@ -14,6 +15,6 @@ public class SideGoalController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D col)
     {
         if (col.gameObject.tag == "Ball")
-            gameManager.Goal(isPlayerOneGoal, 3);
+            gameManager.Goal(isPlayerOneGoal, 3, ballResetPosition, false);
     }
 }
