@@ -1,15 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
+    public Sprite randoimage;
+    [SerializeField] SpriteRenderer[] PlayerOneStars;
+    [SerializeField] SpriteRenderer[] PlayerTwoStars;
+    private int playerOneLitStarsNumber = 0;
+    private int playerTwoLitStarsNumber = 0;
+    [SerializeField] Sprite litStar;
+    [SerializeField] Sprite unlitStar;
+    public bool decreaseBallVelocity;
     [SerializeField] Text PlayerOneScoreText;
     [SerializeField] Text PlayerTwoScoreText;
     [SerializeField] Text playerOneAnimationText;
     [SerializeField] Text playerTwoAnimationText;
 
     [SerializeField] float ballInitialMovementSpeed = 1;
+    [Range(0f, 1f)]
+    [SerializeField] float velocityMultiplierOnImpact = 0.95f;
     [SerializeField] float animationDuration;
     [SerializeField] Camera mainCamera;
     [SerializeField] GameObject player1;
@@ -18,7 +29,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] Vector2 playerTwoStartPos = new Vector2(-7, 0);
     public GameObject ball;
     public Rigidbody2D ballRigidBody;
-    float initialSpeed = 1f;
     Vector2 randomDirection;
     [SerializeField] private int startFontSize = 24; // Initial font size
     [SerializeField] private int endFontSize = 44;
@@ -40,7 +50,49 @@ public class GameManager : MonoBehaviour
             MoveBallInRandomDirection(ballInitialMovementSpeed);
     }
 
+    public void StarHit(bool isPlayerOneStar, GameObject starHit)
+    {
+        if (starHit.GetComponent<SpriteRenderer>().sprite == litStar)
+        {
+            starHit.GetComponent<SpriteRenderer>().sprite = unlitStar;
+            UpdateScore(isPlayerOneStar, -2);
+            if (isPlayerOneStar)
+                playerOneLitStarsNumber--;
+            else
+                playerTwoLitStarsNumber--;
 
+        }
+        else
+        {
+            starHit.GetComponent<SpriteRenderer>().sprite = litStar;
+            UpdateScore(isPlayerOneStar, 2);
+            if (isPlayerOneStar)
+            {
+                playerOneLitStarsNumber++;
+                Debug.Log("playerOneLitStarsNumber" + playerOneLitStarsNumber);
+                if (playerOneLitStarsNumber % 5 == 0)
+                {
+                    foreach (SpriteRenderer sprite in PlayerTwoStars)
+                    {
+                        sprite.sprite = unlitStar;
+                    }
+                }
+            }
+            else
+            {
+                playerTwoLitStarsNumber++;
+                Debug.Log("playerTwoLitStarsNumber" + playerTwoLitStarsNumber);
+                if (playerTwoLitStarsNumber % 5 == 0)
+                {
+                    foreach (SpriteRenderer sprite in PlayerOneStars)
+                    {
+
+                        sprite.sprite = unlitStar;
+                    }
+                }
+            }
+        }
+    }
     public void BongsGoal(bool isPlayerOne, GameObject bongHit)
     {
         UpdateScore(isPlayerOne, 1);
@@ -75,9 +127,6 @@ public class GameManager : MonoBehaviour
             PlayerOneScoreText.text = ("Score Player 1 : " + playerOneScore);
             StartCoroutine(AnimateFloatDisplay(points, playerOneAnimationText));
         }
-
-
-
     }
     void ResetPosition(Vector2 ballRestesrestPostion)
     {
@@ -101,7 +150,10 @@ public class GameManager : MonoBehaviour
     private IEnumerator AnimateFloatDisplay(float value, Text floatText)
     {
         floatText.gameObject.SetActive(true);
-        floatText.text = "+" + value.ToString(); // Display the float value
+        if (value > 0)
+            floatText.text = "+" + value.ToString(); // Display the float value
+        else
+            floatText.text = value.ToString();
         floatText.fontSize = startFontSize; // Reset font size to start size
 
         float elapsedTime = 0f;
@@ -119,5 +171,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(0.3f); // Optional delay before hiding
         floatText.gameObject.SetActive(false); // Deactivate the text GameObject
 
+    }
+    void FixedUpdate()
+    {
+        if (decreaseBallVelocity)
+        {
+            if (ballRigidBody.velocity != Vector2.zero)
+            {
+                ballRigidBody.velocity *= velocityMultiplierOnImpact;
+            }
+        }
     }
 }
