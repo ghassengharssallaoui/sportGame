@@ -38,6 +38,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] Text playerOneAnimationText;
     [SerializeField] Text playerTwoAnimationText;
     private int playerOneLitStarsNumber = 0;
+    private int playerOneLitStarsNumberForText = 0;
+    public Text playerOneLitStarsNumberForTex;
+    public Text playerTwoLitStarsNumberForTex;
+    private int playerTwoLitStarsNumberForText = 0;
     private int playerTwoLitStarsNumber = 0;
     private int playerOneGoals, playerOneOvers, playerOneBongs, playerOneStars, playerTwoGoals, playerTwoOvers, playerTwoBongs, playerTwoStars;
 
@@ -95,11 +99,15 @@ public class GameManager : MonoBehaviour
             {
                 playerOneLitStarsNumber--;
                 playerOneStars--;
+                playerOneLitStarsNumberForText++;
+                playerOneLitStarsNumberForTex.text = "Satrs Hit: " + playerOneLitStarsNumberForText;
             }
             else
             {
                 playerTwoLitStarsNumber--;
                 playerTwoStars--;
+                playerTwoLitStarsNumberForText++;
+                playerTwoLitStarsNumberForTex.text = "Stars Hit: " + playerTwoLitStarsNumberForText;
             }
         }
         else
@@ -109,8 +117,8 @@ public class GameManager : MonoBehaviour
             if (isPlayerOneStar)
             {
                 playerOneLitStarsNumber++;
-
-
+                playerOneLitStarsNumberForText++;
+                playerOneLitStarsNumberForTex.text = "Satrs Hit: " + playerOneLitStarsNumberForText;
                 playerOneStars++;
 
 
@@ -128,6 +136,8 @@ public class GameManager : MonoBehaviour
             else
             {
                 playerTwoLitStarsNumber++;
+                playerTwoLitStarsNumberForText++;
+                playerTwoLitStarsNumberForTex.text = "Stars Hit: " + playerTwoLitStarsNumberForText;
 
                 playerTwoStars++;
                 //  Debug.Log("playerTwoLitStarsNumber" + playerTwoLitStarsNumber);
