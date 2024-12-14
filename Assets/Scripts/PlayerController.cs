@@ -4,24 +4,32 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] bool isPlayerOne;
-    [Range(0f, 20f)]
+    [HideInInspector]
     public float playerSpeed = 15f;
-    [Range(1f, 3f)]
     Rigidbody2D rb;
     Vector2 movement;
-    GameManager gameManager;
+    [SerializeField] Vector2 playerOneStartPos = new Vector2(7, 0);
+    [SerializeField] Vector2 playerTwoStartPos = new Vector2(-7, 0);
+    private void OnEnable()
+    {
+        GameManager.Instance.OnGoalHit += ResetPosition;
+        GameManager.Instance.OnOverHit += ResetPosition;
+    }
+    private void OnDisable()
+    {
+        GameManager.Instance.OnGoalHit -= ResetPosition;
+        GameManager.Instance.OnOverHit += ResetPosition;
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        gameManager = FindObjectOfType<GameManager>();
     }
     void Update()
     {
-        if (isPlayerOne)
+        if (gameObject.tag == "PlayerOne")
         {
-            movement.x = Input.GetAxisRaw("PlayerTwoHorizontal");
-            movement.y = Input.GetAxisRaw("PlayerTwoVertical");
+            movement.x = Input.GetAxisRaw("PlayerOneHorizontal");
+            movement.y = Input.GetAxisRaw("PlayerOneVertical");
         }
         else
         {
@@ -35,13 +43,24 @@ public class PlayerController : MonoBehaviour
             Mathf.Clamp((rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime), -4.487f, 4.487f)));
 
     }
+
+    void ResetPosition(int playerScored)
+    {
+        if (gameObject.tag == "PlayerOne")
+            transform.position = playerOneStartPos;
+        if (gameObject.tag == "PlayerTwo")
+            transform.position = playerTwoStartPos;
+    }
+
+
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Ball"))
+        if (collision.gameObject.tag == "Ball")
         {
-
-            gameManager.decreaseBallVelocity = false;
-
+            int player = gameObject.CompareTag("PlayerOne") ? 1 : 2;
+            // Notify the GameManager
+            GameManager.Instance.NotifyPlayerHit(player);
         }
     }
 }

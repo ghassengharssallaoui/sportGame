@@ -4,16 +4,14 @@ using UnityEngine;
 
 public class GoalController : MonoBehaviour
 {
-    GameManager gameManager;
-    void Start()
-    {
-        gameManager = FindObjectOfType<GameManager>();
-    }
-    [SerializeField] bool isPlayerOneGoal;
-    void OnTriggerEnter2D(Collider2D col)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
 
-        if (col.gameObject.tag == "Ball")
-            gameManager.Goal(isPlayerOneGoal, 6, Vector2.zero, true);
+        if (collision.gameObject.tag == "Ball")
+        {
+            int scoringPlayer = gameObject.CompareTag("PlayerOne") ? 2 : 1;
+            // Notify the GameManager
+            GameManager.Instance.NotifyGoalHit(scoringPlayer);
+        }
     }
 }

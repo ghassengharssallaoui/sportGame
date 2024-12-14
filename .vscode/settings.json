@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "sportGame.sln"
+    "dotnet.defaultSolution": "ORIGINAL.sln"
 }

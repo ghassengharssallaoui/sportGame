@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,319 +6,196 @@ using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
-
-
-    [SerializeField] float gameDuration = 180f;
-
-    [SerializeField] float ballInitialMovementSpeed = 1;
-    [Range(0f, 1f)]
-    [SerializeField] float velocityMultiplierOnImpact = 0.95f;
-    [SerializeField] float animationDuration;
-    [SerializeField] Vector2 playerOneStartPos = new Vector2(7, 0);
-    [SerializeField] Vector2 playerTwoStartPos = new Vector2(-7, 0);
-    public bool decreaseBallVelocity;
-
-
-    [SerializeField] private int startFontSize = 24; // Initial font size
-    [SerializeField] private int endFontSize = 44;
-
-
     [SerializeField]
-    private Text playerOneGoalsText, playerOneOversText, playerOneBongsText, playerOneStarsText, playerTwoGoalsText, playerTwoOversText, timerText,
-     playerTwoBongsText, playerTwoStarsText;
+    SlidersController slidersController;
+    public event Action<int> OnGoalHit;
+    public event Action<int> OnOverHit;
+    public event Action<int, BongsController> OnBongHit;
+    public event Action<int, int> OnStarsHit;
+    public event Action<int> OnKeeperHit;
+    public event Action<int> OnPlayerHit;
+    public event Action OnGameStart;
+    public event Action OnGameEnd;
+    public static GameManager Instance;
+    [SerializeField] float gameDuration = 180f;
+    private float gameTime = 0f;
     private bool isPaused = false;
+    [SerializeField] private StarController[] playerOneStars; // Stars belonging to Player 1
+    [SerializeField] private StarController[] playerTwoStars; // Stars belonging to Player 2
 
-    [SerializeField] SpriteRenderer[] PlayerOneStars;
-    [SerializeField] SpriteRenderer[] PlayerTwoStars;
-
-    [SerializeField] Sprite litStar;
-    [SerializeField] Sprite unlitStar;
-
-    [SerializeField] Text PlayerOneScoreText;
-    [SerializeField] Text PlayerTwoScoreText;
-    [SerializeField] Text playerOneAnimationText;
-    [SerializeField] Text playerTwoAnimationText;
-    private int playerOneLitStarsNumber = 0;
-    private int playerTwoLitStarsNumber = 0;
-    private int playerOneGoals, playerOneOvers, playerOneBongs, playerOneStars, playerTwoGoals, playerTwoOvers, playerTwoBongs, playerTwoStars;
-
-
-
-    [SerializeField] Camera mainCamera;
-    [SerializeField] GameObject player1;
-    [SerializeField] GameObject player2;
-
-    public GameObject ball;
-    public Rigidbody2D ballRigidBody;
-    Vector2 randomDirection;
-    private int playerOneScore = 0;
-    private int playerTwoScore = 0;
-    private float gameTime = 0f; // Tracks elapsed game time
-    private bool gameActive = true; // Determines if the game is active
-
-
-    void Start()
+    private void Awake()
     {
-        ballRigidBody = ball.GetComponent<Rigidbody2D>();
-        MoveBallInRandomDirection(ballInitialMovementSpeed);
-    }
-    public void Goal(bool isPlayerOne, int points, Vector2 ballRestPostion, bool isBallMoving)
-    {
-        if (points == 6)
+        if (Instance == null)
         {
-            if (isPlayerOne)
-                playerOneGoals++;
-            else
-                playerTwoGoals++;
+            Instance = this;
         }
-        if (points == 3)
+        else if (Instance != this)
         {
-            if (isPlayerOne)
-                playerOneOvers++;
-            else
-                playerTwoOvers++;
-        }
-        UpdateScore(isPlayerOne, points);
-        ResetPosition(ballRestPostion);
-        StartCoroutine(ShakeCamera(0.4f, 0.08f));
-        if (isBallMoving)
-            MoveBallInRandomDirection(ballInitialMovementSpeed);
-    }
-
-    public void StarHit(bool isPlayerOneStar, GameObject starHit)
-    {
-
-        if (starHit.GetComponent<SpriteRenderer>().sprite == litStar)
-        {
-            starHit.GetComponent<SpriteRenderer>().sprite = unlitStar;
-            UpdateScore(isPlayerOneStar, -2);
-            if (isPlayerOneStar)
-            {
-                playerOneLitStarsNumber--;
-                playerOneStars--;
-            }
-            else
-            {
-                playerTwoLitStarsNumber--;
-                playerTwoStars--;
-            }
-        }
-        else
-        {
-            starHit.GetComponent<SpriteRenderer>().sprite = litStar;
-            UpdateScore(isPlayerOneStar, 2);
-            if (isPlayerOneStar)
-            {
-                playerOneLitStarsNumber++;
-
-
-                playerOneStars++;
-
-
-
-
-                // Debug.Log("playerOneLitStarsNumber" + playerOneLitStarsNumber);
-                if (playerOneLitStarsNumber % 5 == 0)
-                {
-                    foreach (SpriteRenderer sprite in PlayerTwoStars)
-                    {
-                        sprite.sprite = unlitStar;
-                    }
-                }
-            }
-            else
-            {
-                playerTwoLitStarsNumber++;
-
-                playerTwoStars++;
-                //  Debug.Log("playerTwoLitStarsNumber" + playerTwoLitStarsNumber);
-                if (playerTwoLitStarsNumber % 5 == 0)
-                {
-                    foreach (SpriteRenderer sprite in PlayerOneStars)
-                    {
-
-                        sprite.sprite = unlitStar;
-                    }
-                }
-            }
+            Destroy(gameObject);  // Ensure only one instance exists.
         }
     }
-    public void BongsGoal(bool isPlayerOne, GameObject bongHit)
+    private void Start()
     {
-
-        if (isPlayerOne)
-            playerOneBongs++;
-        else
-            playerTwoBongs++;
-
-        UpdateScore(isPlayerOne, 1);
-        StartCoroutine(DeactivateForSeconds(1f, bongHit));
+        slidersController.LoadSettings();
+        OnGameStart?.Invoke();
     }
-    private IEnumerator ShakeCamera(float duration, float magnitude)
+    public void NotifyGoalHit(int scoringPlayer)
     {
-        Vector3 originalPosition = mainCamera.transform.localPosition;
-        float elapsed = 0f;
-        while (elapsed < duration)
-        {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
-            mainCamera.transform.localPosition = originalPosition + new Vector3(x, y);
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        mainCamera.transform.localPosition = originalPosition;
+        OnGoalHit?.Invoke(scoringPlayer);
     }
-    void UpdateScore(bool isPlayerOne, int points)
+    public void NotifyOverHit(int scoringPlayer)
     {
-        if (isPlayerOne)
-        {
-            playerTwoScore += points;
-            PlayerTwoScoreText.text = ("Score Player 2 : " + playerTwoScore);
-            StartCoroutine(AnimateFloatDisplay(points, playerTwoAnimationText));
-        }
-        else
-        {
-            playerOneScore += points;
-            PlayerOneScoreText.text = ("Score Player 1 : " + playerOneScore);
-            StartCoroutine(AnimateFloatDisplay(points, playerOneAnimationText));
-        }
+        OnOverHit?.Invoke(scoringPlayer);
     }
-    void ResetPosition(Vector2 ballRestesrestPostion)
-    {
-        player1.transform.position = playerOneStartPos;
-        player2.transform.position = playerTwoStartPos;
-        ball.transform.position = ballRestesrestPostion;
-        ballRigidBody.velocity = Vector2.zero;
-    }
-    void MoveBallInRandomDirection(float movementSpeed)
-    {
-        randomDirection = Random.insideUnitCircle.normalized;
-        ballRigidBody.velocity = randomDirection * movementSpeed;
-    }
-    private IEnumerator DeactivateForSeconds(float seconds, GameObject bongHit)
-    {
-        // Deactivate the game object
-        bongHit.SetActive(false);
-        yield return new WaitForSeconds(seconds);
-        bongHit.SetActive(true);
-    }
-    private IEnumerator AnimateFloatDisplay(float value, Text floatText)
-    {
-        floatText.gameObject.SetActive(true);
-        if (value > 0)
-            floatText.text = "+" + value.ToString(); // Display the float value
-        else
-            floatText.text = value.ToString();
-        floatText.fontSize = startFontSize; // Reset font size to start size
 
-        float elapsedTime = 0f;
-
-        // Animate font size growth
-        while (elapsedTime < animationDuration)
-        {
-            float t = elapsedTime / animationDuration;
-            floatText.fontSize = Mathf.RoundToInt(Mathf.Lerp(startFontSize, endFontSize, t));
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        floatText.fontSize = endFontSize; // Ensure final font size is set
-        yield return new WaitForSeconds(0.3f); // Optional delay before hiding
-        floatText.gameObject.SetActive(false); // Deactivate the text GameObject
-
+    public void NotifyBongHit(int scoringPlayer, BongsController bong)
+    {
+        OnBongHit?.Invoke(scoringPlayer, bong);
     }
+
+    public void NotifyStarsHit(int scoringPlayer, int index)
+    {
+        OnStarsHit?.Invoke(scoringPlayer, index);
+    }
+    public void NotifyKeeperHit(int playersKeeper)
+    {
+        OnKeeperHit?.Invoke(playersKeeper);
+    }
+    public void NotifyPlayerHit(int player)
+    {
+        OnPlayerHit?.Invoke(player);
+    }
+
+
+
     void Update()
     {
-
-        playerOneGoalsText.text = "Goals \n" + playerOneGoals;
-        playerTwoGoalsText.text = "Goals \n" + playerTwoGoals;
-        playerOneOversText.text = "Overs \n" + playerOneOvers;
-        playerTwoOversText.text = "Overs \n" + playerTwoOvers;
-        playerOneBongsText.text = "Bongs \n" + playerOneBongs;
-        playerTwoBongsText.text = "Bongs \n" + playerTwoBongs;
-        playerOneStarsText.text = "Stars \n" + playerOneStars;
-        playerTwoStarsText.text = "Stars \n" + playerTwoStars;
-
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            ResetBallToCenter();
-        }
-
-        // Check if the 'P' key is pressed
         if (Input.GetKeyDown(KeyCode.P))
         {
-            isPaused = !isPaused;
-            if (isPaused)
-            {
-                Time.timeScale = 0f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }
+            TogglePause();
         }
-        if (gameActive)
+        gameTime += Time.deltaTime;
+        // Stop the game at 3 minutes
+        if (gameTime >= gameDuration)
         {
-            gameTime += Time.deltaTime;
-
-            // Stop the game at 3 minutes
-            if (gameTime >= gameDuration)
-            {
-                EndGame();
-            }
-            else
-
-                UpdateTimerDisplay();
+            OnGameEnd?.Invoke();
+            Time.timeScale = 0f;
         }
     }
-    void UpdateTimerDisplay()
+
+    public void TogglePause()
     {
-        int minutes = Mathf.FloorToInt(gameTime / 60); // Calculate minutes
-        int seconds = Mathf.FloorToInt(gameTime % 60); // Calculate seconds
-        timerText.text = $"{minutes:D2}:{seconds:D2}"; // Format as MM:SS
+        isPaused = !isPaused;
+        Time.timeScale = isPaused ? 0f : 1f;
     }
 
-    void ResetBallToCenter()
+    public void CheckAllStarsLit(int player)
     {
-        // Reset the ball to the middle of the play area
-        ball.transform.position = Vector2.zero;
-        ballRigidBody.velocity = Vector2.zero;
+        StarController[] stars = player == 1 ? playerOneStars : playerTwoStars;
 
-        // Optionally, re-initiate ball movement
-        MoveBallInRandomDirection(ballInitialMovementSpeed);
-    }
-    void FixedUpdate()
-    {
-        if (decreaseBallVelocity)
+        bool allLit = true;
+        foreach (StarController star in stars)
         {
-            if (ballRigidBody.velocity != Vector2.zero)
+            if (!star.GetIsLit())
             {
-                ballRigidBody.velocity *= velocityMultiplierOnImpact;
+                allLit = false;
+                break;
             }
         }
+
+        if (allLit)
+        {
+            HandleAllStarsLit(player);
+        }
     }
-    void EndGame()
+
+
+    private void HandleAllStarsLit(int player)
     {
-        gameActive = false; // Stop the timer updates
-        timerText.text = "Game Over! Time is up!";
-        if (playerOneScore > playerTwoScore)
+        StarController[] stars = player == 1 ? playerOneStars : playerTwoStars;
+        bool allLit = true;
+        foreach (StarController star in stars)
         {
-            timerText.text += "\n Player One Wins";
+            if (!star.GetIsLit())
+            {
+                allLit = false;
+                break;
+            }
+        }
 
-        }
-        else if (playerOneScore < playerTwoScore)
+        if (allLit)
         {
-            timerText.text += "\n Player Two Wins";
+            ResetAllStars(stars);
+        }
 
-        }
-        else
-        {
-            timerText.text += "\n Tie";
-        }
-        Time.timeScale = 0f; // Freeze the game
-        Debug.Log("Game Over! Time is up!");
-        // Optionally, trigger an end-game screen or message here
     }
+    private void ResetAllStars(StarController[] stars)
+    {
+        foreach (StarController star in stars)
+        {
+            star.ResetStar();
+        }
+    }
+    public StarController[] GetPlayerOneStars() => playerOneStars;
+    public StarController[] GetPlayerTwoStars() => playerTwoStars;
+    /* public void StarHit(bool isPlayerOneStar, GameObject starHit)
+ {
+
+     if (starHit.GetComponent<SpriteRenderer>().sprite == litStar)
+     {
+         starHit.GetComponent<SpriteRenderer>().sprite = unlitStar;
+         // UpdateScore(isPlayerOneStar, -2);
+         if (isPlayerOneStar)
+         {
+             playerOneLitStarsNumber--;
+             playerOneStars--;
+         }
+         else
+         {
+             playerTwoLitStarsNumber--;
+             playerTwoStars--;
+         }
+     }
+     else
+     {
+         starHit.GetComponent<SpriteRenderer>().sprite = litStar;
+         //   UpdateScore(isPlayerOneStar, 2);
+         if (isPlayerOneStar)
+         {
+             playerOneLitStarsNumber++;
+
+
+             playerOneStars++;
+
+
+
+
+             // Debug.Log("playerOneLitStarsNumber" + playerOneLitStarsNumber);
+             if (playerOneLitStarsNumber % 5 == 0)
+             {
+                 foreach (SpriteRenderer sprite in PlayerTwoStars)
+                 {
+                     sprite.sprite = unlitStar;
+                 }
+             }
+         }
+         else
+         {
+             playerTwoLitStarsNumber++;
+
+             playerTwoStars++;
+             //  Debug.Log("playerTwoLitStarsNumber" + playerTwoLitStarsNumber);
+             if (playerTwoLitStarsNumber % 5 == 0)
+             {
+                 foreach (SpriteRenderer sprite in PlayerOneStars)
+                 {
+
+                     sprite.sprite = unlitStar;
+                 }
+             }
+         }
+     }
+ }
+*/
 
 }

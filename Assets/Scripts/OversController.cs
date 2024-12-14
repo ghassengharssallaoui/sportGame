@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class OversController : MonoBehaviour
 {
-
-    GameManager gameManager;
-    [SerializeField] Vector2 ballResetPosition;
-    void Start()
+    void OnTriggerEnter2D(Collider2D collision)
     {
-        gameManager = FindObjectOfType<GameManager>();
-    }
-    [SerializeField] bool isPlayerOneGoal;
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.tag == "Ball")
-            gameManager.Goal(isPlayerOneGoal, 3, ballResetPosition, false);
+        if (collision.gameObject.tag == "Ball")
+        {
+            int scoringPlayer = gameObject.CompareTag("PlayerOne") ? 2 : 1;
+            // Notify the GameManager
+            GameManager.Instance.NotifyOverHit(scoringPlayer);
+        }
     }
 }
