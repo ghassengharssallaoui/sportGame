@@ -5,6 +5,7 @@ public class SlidersController : MonoBehaviour
 {
     [Header("Sliders")]
     [SerializeField] private Slider DefaultBallSpeed;
+    [SerializeField] private Slider ImpactWithStars;
     [SerializeField] private Slider BallDragSlider;
     [SerializeField] private Slider ImpactForceSlider; // After save speed
     [SerializeField] private Slider SlowDownAfterSaveSlider; // velocityMultiplierOnImpact
@@ -20,6 +21,7 @@ public class SlidersController : MonoBehaviour
     [SerializeField] private Text ballRandomMovementSpeedText;
     [SerializeField] private Text playerOneSpeedText;
     [SerializeField] private Text playerTwoSpeedText;
+    [SerializeField] private Text impactWithStarsText;
 
     [SerializeField] private BallController ballController;
     [SerializeField] private PlayerController playerOneController;
@@ -35,6 +37,11 @@ public class SlidersController : MonoBehaviour
         {
             DefaultBallSpeed.value = ballController.defaultBallSpeed;
             DefaultBallSpeed.onValueChanged.AddListener(UpdateDefaultBallSpeed);
+        }
+        if (ImpactWithStars != null)
+        {
+            ImpactWithStars.value = ballController.impactWithStars;
+            ImpactWithStars.onValueChanged.AddListener(UpdateImpactWithStars);
         }
 
         if (BallDragSlider != null)
@@ -81,12 +88,18 @@ public class SlidersController : MonoBehaviour
         UpdateBallRandomMovementSpeedText();
         UpdatePlayerOneSpeedText();
         UpdatePlayerTwoSpeedText();
+        UpdateImpactWithStarsText();
     }
 
     private void UpdateDefaultBallSpeed(float newSpeed)
     {
         ballController.defaultBallSpeed = newSpeed;
         UpdateBallSpeedText();
+    }
+    private void UpdateImpactWithStars(float newSpeed)
+    {
+        ballController.impactWithStars = newSpeed;
+        UpdateImpactWithStarsText();
     }
 
     private void UpdateBallDrag(float newDrag)
@@ -131,6 +144,13 @@ public class SlidersController : MonoBehaviour
         if (ballSpeedText != null)
         {
             ballSpeedText.text = $"Default Ball Speed: {ballController.defaultBallSpeed:F2}";
+        }
+    }
+    private void UpdateImpactWithStarsText()
+    {
+        if (impactWithStarsText != null)
+        {
+            impactWithStarsText.text = $"Impact With Stars: {ballController.impactWithStars:F2}";
         }
     }
 
@@ -191,6 +211,7 @@ public class SlidersController : MonoBehaviour
         PlayerPrefs.SetFloat("BallRandomMovementSpeed", ballController.ballRandomMovementSpeed);
         PlayerPrefs.SetFloat("PlayerOneSpeed", playerOneController.playerSpeed);
         PlayerPrefs.SetFloat("PlayerTwoSpeed", playerTwoController.playerSpeed);
+        PlayerPrefs.SetFloat("ImpactWithStars", ballController.impactWithStars);
 
         PlayerPrefs.Save();
         Debug.Log("Settings Saved!");
@@ -199,6 +220,7 @@ public class SlidersController : MonoBehaviour
     public void LoadSettings()
     {
         ballController.defaultBallSpeed = PlayerPrefs.GetFloat("DefaultBallSpeed", ballController.defaultBallSpeed);
+        ballController.impactWithStars = PlayerPrefs.GetFloat("ImpactWithStars", ballController.impactWithStars);
         ballController.ballRigidbody.drag = PlayerPrefs.GetFloat("BallDrag", ballController.ballRigidbody.drag);
         ballController.impactForce = PlayerPrefs.GetFloat("ImpactForce", ballController.impactForce);
         ballController.velocityMultiplierOnImpact = PlayerPrefs.GetFloat("SlowDownMultiplier", ballController.velocityMultiplierOnImpact);
@@ -209,7 +231,8 @@ public class SlidersController : MonoBehaviour
 
     public void OpenSettings()
     {
-        GameManager.Instance.TogglePause();
+        if (!GameManager.Instance.isPaused)
+            GameManager.Instance.TogglePause();
         gameObject.SetActive(true);
     }
     public void CloseSettings()

@@ -9,7 +9,7 @@ public class BallController : MonoBehaviour
     [HideInInspector]
     public float ballRandomMovementSpeed = 1;
     [HideInInspector]
-    public float defaultBallSpeed = 2.0f; // Default ball speed
+    public float defaultBallSpeed = 2.0f, impactWithStars = 2.0f; // Default ball speed
     [HideInInspector]
     public float impactForce = 1.5f; // New variable for additional force on impact
 
@@ -115,8 +115,22 @@ public class BallController : MonoBehaviour
             //newDirection.Normalize(); // Ensure the direction is normalized
 
             // Set the ball's velocity
-            float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
+            // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
             ballRigidbody.velocity = newDirection * defaultBallSpeed;
+        }
+        else if (collision.gameObject.name.Contains("Star"))
+        {
+            // decreaseBallVelocity = false;
+            // applyImpactForce = false; // Reset to prevent unintended behavior
+
+            // Calculate new velocity after collision with player
+            //Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
+            Vector2 newDirection = ballRigidbody.velocity.normalized;
+            //newDirection.Normalize(); // Ensure the direction is normalized
+
+            // Set the ball's velocity
+            // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
+            ballRigidbody.velocity = newDirection * impactWithStars;
         }
     }
 
