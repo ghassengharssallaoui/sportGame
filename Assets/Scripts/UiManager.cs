@@ -29,6 +29,10 @@ public class UiManager : MonoBehaviour
         GameManager.Instance.OnKeeperHit += UpdateKeeperStatistics;
         GameManager.Instance.OnPlayerHit += UpdatePlayerStatistics;
         GameManager.Instance.OnGameEnd += UpdateEndGameUis;
+        GameManager.Instance.OnHalfTimeReached += UpdateHalfTimeUis;
+        GameManager.Instance.OnHalfTimeEnded += UpdateAfterHalfTimeUis;
+        GameManager.Instance.OnGameStart += UpdateStartUis;
+
     }
 
     private void OnDisable()
@@ -41,6 +45,10 @@ public class UiManager : MonoBehaviour
         GameManager.Instance.OnKeeperHit += UpdateKeeperStatistics;
         GameManager.Instance.OnPlayerHit += UpdatePlayerStatistics;
         GameManager.Instance.OnGameEnd -= UpdateEndGameUis;
+        GameManager.Instance.OnHalfTimeReached -= UpdateHalfTimeUis;
+        GameManager.Instance.OnHalfTimeEnded -= UpdateAfterHalfTimeUis;
+        GameManager.Instance.OnGameStart -= UpdateStartUis;
+
     }
 
     // Update scoring UI and animation for goals, overs, bongs, and stars
@@ -148,10 +156,25 @@ public class UiManager : MonoBehaviour
     // Timer update method
     void UpdateTimerDisplay(float gameTime)
     {
-        int minutes = Mathf.FloorToInt(gameTime / 60);
-        int seconds = Mathf.FloorToInt(gameTime % 60);
+        float remainingTime = Mathf.Clamp(GameManager.Instance.GameDuration() - gameTime, 0, GameManager.Instance.GameDuration()); // Ensure it doesn't go below 0
+        int minutes = Mathf.FloorToInt(remainingTime / 60);
+        int seconds = Mathf.FloorToInt(remainingTime % 60);
         timerText.text = $"{minutes:D2}:{seconds:D2}";
     }
+    private void UpdateHalfTimeUis()
+    {
+        gameResultText.text = "Half Time\n PRESS SPACE";
+    }
+    private void UpdateStartUis()
+    {
+        gameResultText.text = "";
+
+    }
+    private void UpdateAfterHalfTimeUis()
+    {
+        gameResultText.text = "";
+    }
+
     private void UpdateEndGameUis()
     {
 
@@ -176,6 +199,6 @@ public class UiManager : MonoBehaviour
     }
     private void Update()
     {
-        UpdateTimerDisplay(Time.time);
+        UpdateTimerDisplay(GameManager.Instance.GameTime());
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement; // Required for SceneManager
 public class GameManager : MonoBehaviour
 {
     [SerializeField]
-    SlidersController slidersController;
+    SlidersController1 slidersController;
 
     public event Action<int> OnGoalHit;
     public event Action<int> OnOverHit;
@@ -17,6 +17,13 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnPlayerHit;
     public event Action OnGameStart;
     public event Action OnGameEnd;
+    public event Action OnHalfTimeReached;
+    private bool isHalfTimeReached = false; // Tracks if halftime logic has been executed
+    private bool isInHalftime = false; // Tracks if the game is in halftime
+    public event Action OnHalfTimeEnded;
+
+
+
 
     public static GameManager Instance;
 
@@ -28,6 +35,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private StarController[] playerOneStars; // Stars belonging to Player 1
     [SerializeField] private StarController[] playerTwoStars; // Stars belonging to Player 2
+    public float GameTime() => gameTime;
+    public float GameDuration() => gameDuration;
 
     private void Awake()
     {
@@ -49,6 +58,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (isInHalftime && Input.GetKeyDown(KeyCode.Space))
+        {
+            isInHalftime = false; // End halftime state
+            Time.timeScale = 1f;  // Resume game from halftime
+            Debug.Log("Halftime over, game resumed!");
+            OnHalfTimeEnded?.Invoke();
+        }
         // Start the game when Space is pressed.
         if (!isGameStarted && Input.GetKeyDown(KeyCode.Space))
         {
@@ -63,7 +79,7 @@ public class GameManager : MonoBehaviour
             RestartGame();
         }
 
-        if (isGameStarted && !isGameEnded)
+        if (isGameStarted && !isGameEnded && !isInHalftime)
         {
             if (Input.GetKeyDown(KeyCode.P))
             {
@@ -71,7 +87,13 @@ public class GameManager : MonoBehaviour
             }
 
             gameTime += Time.deltaTime;
-
+            if (!isHalfTimeReached && gameTime >= gameDuration / 2)
+            {
+                isHalfTimeReached = true; // Prevent event from being raised again
+                OnHalfTimeReached?.Invoke(); // Raise the halftime event
+                Debug.Log("Halftime reached!");
+                HandleHalftime();
+            }
             // Stop the game at 3 minutes.
             if (gameTime >= gameDuration)
             {
@@ -79,10 +101,19 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private void HandleHalftime()
+    {
+        Debug.Log("Halftime reached! Pausing the game...");
+        Time.timeScale = 0f; // Pause the game during halftime
+        isInHalftime = true; // Set halftime state
+
+        // Display halftime message (implement this in your UI)
+        Debug.Log("Press Space to resume the game.");
+    }
 
     public void TogglePause()
     {
-        if (isGameStarted)
+        if (isGameStarted && !isInHalftime) // Don't toggle pause if it's halftime
         {
             isPaused = !isPaused;
             Time.timeScale = isPaused ? 0f : 1f;
