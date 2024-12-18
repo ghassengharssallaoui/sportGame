@@ -34,7 +34,7 @@ public class SlidersController1 : MonoBehaviour
         playerOneController.playerSpeed = PlayerPrefs.GetFloat("PlayerOneSpeed", playerOneController.playerSpeed);
         playerTwoController.playerSpeed = PlayerPrefs.GetFloat("PlayerTwoSpeed", playerTwoController.playerSpeed);
         ballController.impactWithStars = PlayerPrefs.GetFloat("ImpactWithStars", ballController.impactWithStars);
-        ballController.impactWithStars = PlayerPrefs.GetFloat("ImpactWithWalls", ballController.impactWithWalls);
+        ballController.impactWithWalls = PlayerPrefs.GetFloat("ImpactWithWalls", ballController.impactWithWalls);
     }
 
     public void OpenSettings()

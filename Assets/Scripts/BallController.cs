@@ -28,6 +28,9 @@ public class BallController : MonoBehaviour
         GameManager.Instance.OnOverHit += OverScored;
         GameManager.Instance.OnHalfTimeReached += ResetBallToCenter;
         GameManager.Instance.OnHalfTimeEnded += MoveBallInRandomDirection;
+
+        GameManager.Instance.OnGoldenGoal += ResetBallToCenter;
+        GameManager.Instance.OnGoldenGoal += MoveBallInRandomDirection;
     }
 
     private void OnDisable()
@@ -37,6 +40,9 @@ public class BallController : MonoBehaviour
         GameManager.Instance.OnOverHit -= OverScored;
         GameManager.Instance.OnHalfTimeReached -= ResetBallToCenter;
         GameManager.Instance.OnHalfTimeEnded -= MoveBallInRandomDirection;
+
+        GameManager.Instance.OnGoldenGoal -= ResetBallToCenter; ;
+        GameManager.Instance.OnGoldenGoal -= MoveBallInRandomDirection;
     }
 
     private void OverScored(int playerScored)
@@ -148,7 +154,7 @@ public class BallController : MonoBehaviour
 
             // Set the ball's velocity
             // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
-            ballRigidbody.velocity = newDirection * impactWithWalls;
+            ballRigidbody.velocity = newDirection * defaultBallSpeed;
         }
     }
 

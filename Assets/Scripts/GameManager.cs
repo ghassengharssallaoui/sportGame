@@ -2,10 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement; // Required for SceneManager
+using UnityEngine.SceneManagement;
+using UnityEngine.UI; // Required for SceneManager
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] Text resultText;
+
     [SerializeField]
     SlidersController1 slidersController;
 
@@ -16,7 +19,8 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnKeeperHit;
     public event Action<int> OnPlayerHit;
     public event Action OnGameStart;
-    public event Action OnGameEnd;
+    public event Action<bool> OnGameEnd;
+    public event Action OnGoldenGoal;
     public event Action OnHalfTimeReached;
     private bool isHalfTimeReached = false; // Tracks if halftime logic has been executed
     private bool isInHalftime = false; // Tracks if the game is in halftime
@@ -32,6 +36,7 @@ public class GameManager : MonoBehaviour
     public bool isPaused = false;
     public bool isGameStarted = false;
     private bool isGameEnded = false; // Track if the game has ended
+    private bool isGoldenGoalActive = false;
 
     [SerializeField] private StarController[] playerOneStars; // Stars belonging to Player 1
     [SerializeField] private StarController[] playerTwoStars; // Stars belonging to Player 2
@@ -58,11 +63,27 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (isGoldenGoalActive && Input.GetKeyDown(KeyCode.Space))
+        {
+            Time.timeScale = 1f;
+            resultText.text = "";
+        }
+        if (gameTime >= gameDuration && !isGoldenGoalActive) // Time is up, check scores
+        {
+            if (ScoreManager.Instance.GetPlayerOneScore() == ScoreManager.Instance.GetPlayerTwoScore())
+            {
+                TriggerGoldenGoal();
+            }
+            else
+            {
+                EndGame(false);
+            }
+        }
         if (isInHalftime && Input.GetKeyDown(KeyCode.Space))
         {
             isInHalftime = false; // End halftime state
             Time.timeScale = 1f;  // Resume game from halftime
-            Debug.Log("Halftime over, game resumed!");
+                                  //            Debug.Log("Halftime over, game resumed!");
             OnHalfTimeEnded?.Invoke();
         }
         // Start the game when Space is pressed.
@@ -91,24 +112,26 @@ public class GameManager : MonoBehaviour
             {
                 isHalfTimeReached = true; // Prevent event from being raised again
                 OnHalfTimeReached?.Invoke(); // Raise the halftime event
-                Debug.Log("Halftime reached!");
+                                             //                Debug.Log("Halftime reached!");
                 HandleHalftime();
             }
-            // Stop the game at 3 minutes.
-            if (gameTime >= gameDuration)
-            {
-                EndGame();
-            }
+
         }
+    }
+    private void TriggerGoldenGoal()
+    {
+        isGoldenGoalActive = true;
+        Time.timeScale = 0;
+        OnGoldenGoal?.Invoke();
     }
     private void HandleHalftime()
     {
-        Debug.Log("Halftime reached! Pausing the game...");
+        //        Debug.Log("Halftime reached! Pausing the game...");
         Time.timeScale = 0f; // Pause the game during halftime
         isInHalftime = true; // Set halftime state
 
         // Display halftime message (implement this in your UI)
-        Debug.Log("Press Space to resume the game.");
+        //        Debug.Log("Press Space to resume the game.");
     }
 
     public void TogglePause()
@@ -187,12 +210,12 @@ public class GameManager : MonoBehaviour
     public StarController[] GetPlayerOneStars() => playerOneStars;
     public StarController[] GetPlayerTwoStars() => playerTwoStars;
 
-    private void EndGame()
+    public void EndGame(bool isGoldenGoal)
     {
         isGameEnded = true;
         Time.timeScale = 0f; // Stop the game.
-        OnGameEnd?.Invoke();
-        Debug.Log("Game has ended. Press Space to restart.");
+        OnGameEnd?.Invoke(isGoldenGoal);
+        //        Debug.Log("Game has ended. Press Space to restart.");
     }
 
     private void RestartGame()

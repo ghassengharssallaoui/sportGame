@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BallImpactWithWalls : SliderHandlerBase
+public class BallImpactWithWallsSlider : SliderHandlerBase
 {
     public override void InitializeSlider()
     {

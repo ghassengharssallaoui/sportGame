@@ -39,8 +39,8 @@ public class PlayerController : MonoBehaviour
     }
     void FixedUpdate()
     {
-        rb.MovePosition(new Vector2(Mathf.Clamp((rb.position.x + movement.normalized.x * playerSpeed * Time.fixedDeltaTime), -10.17f, 10.17f),
-            Mathf.Clamp((rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime), -4.487f, 4.487f)));
+        rb.MovePosition(new Vector2(Mathf.Clamp((rb.position.x + movement.normalized.x * playerSpeed * Time.fixedDeltaTime), -10f, 10f),
+            Mathf.Clamp((rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime), -4.35f, 4.35f)));
 
     }
 
