@@ -42,7 +42,7 @@ public class BallController : MonoBehaviour
         GameManager.Instance.OnHalfTimeEnded -= MoveBallInRandomDirection;
 
         GameManager.Instance.OnGoldenGoal -= ResetBallToCenter; ;
-        GameManager.Instance.OnGoldenGoal -= MoveBallInRandomDirection;
+        GameManager.Instance.OnGoldenGoal -= MoveBallInRandomDirectionHorizontally;
     }
 
     private void OverScored(int playerScored)
@@ -75,12 +75,45 @@ public class BallController : MonoBehaviour
         randomDirection = UnityEngine.Random.insideUnitCircle.normalized;
         ballRigidbody.velocity = randomDirection * ballRandomMovementSpeed * defaultBallSpeed;
     }
+    void MoveBallInRandomDirectionHorizontally()
+    {
+        float angle;
+
+        // Randomly pick an angle from the desired ranges
+        float rangeSelector = UnityEngine.Random.value;
+
+        if (rangeSelector > 0.66f)
+        {
+            // First range: 315° to 360° (or 0°)
+            angle = UnityEngine.Random.Range(315f, 360f);
+        }
+        else if (rangeSelector > 0.33f)
+        {
+            // Second range: 0° to 45°
+            angle = UnityEngine.Random.Range(0f, 45f);
+        }
+        else
+        {
+            // Third range: 135° to 225°
+            angle = UnityEngine.Random.Range(135f, 225f);
+        }
+
+        // Convert the angle to a direction vector
+        Vector2 randomDirection = new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad)).normalized;
+
+        // Set the ball's velocity
+        ballRigidbody.velocity = randomDirection * ballRandomMovementSpeed * defaultBallSpeed;
+    }
+
+
+
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
             ResetBallToCenter();
+            MoveBallInRandomDirection();
         }
     }
 
@@ -118,42 +151,19 @@ public class BallController : MonoBehaviour
         {
             decreaseBallVelocity = false;
             applyImpactForce = false; // Reset to prevent unintended behavior
-
             // Calculate new velocity after collision with player
             Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
-            Vector2 newDirection = ballRigidbody.velocity.normalized + playerVelocity.normalized;
-            //newDirection.Normalize(); // Ensure the direction is normalized
-
-            // Set the ball's velocity
-            // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
+            Vector2 newDirection = ballRigidbody.velocity.normalized;
             ballRigidbody.velocity = newDirection * defaultBallSpeed;
         }
         else if (collision.gameObject.name.Contains("Star"))
         {
-            // decreaseBallVelocity = false;
-            // applyImpactForce = false; // Reset to prevent unintended behavior
-
-            // Calculate new velocity after collision with player
-            //Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
             Vector2 newDirection = ballRigidbody.velocity.normalized;
-            //newDirection.Normalize(); // Ensure the direction is normalized
-
-            // Set the ball's velocity
-            // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
             ballRigidbody.velocity = newDirection * impactWithStars;
         }
         else if (collision.gameObject.name.Contains("Walls"))
         {
-            // decreaseBallVelocity = false;
-            // applyImpactForce = false; // Reset to prevent unintended behavior
-
-            // Calculate new velocity after collision with player
-            //Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
             Vector2 newDirection = ballRigidbody.velocity.normalized;
-            //newDirection.Normalize(); // Ensure the direction is normalized
-
-            // Set the ball's velocity
-            // float newSpeed = Mathf.Max(defaultBallSpeed, playerVelocity.magnitude);
             ballRigidbody.velocity = newDirection * defaultBallSpeed;
         }
     }
