@@ -1802,8 +1802,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09893a53f3d9b456d9d7b0eaa7eae78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOneController: {fileID: 0}
-  playerNumber: Player One Speed
+  playerController: {fileID: 14820857}
+  sliderDisplayText: Player One Speed
 --- !u!1 &250000010
 GameObject:
   m_ObjectHideFlags: 0
@@ -12833,8 +12833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09893a53f3d9b456d9d7b0eaa7eae78b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerOneController: {fileID: 0}
-  playerNumber: Player Two Speed
+  playerController: {fileID: 1418973901}
+  sliderDisplayText: Player Two Speed
 --- !u!1 &2147302207
 GameObject:
   m_ObjectHideFlags: 0
