@@ -10,13 +10,11 @@ public class EdgeController : MonoBehaviour
         {
             if (this.gameObject.tag == "ButtomEdge")
             {
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0, 3f);
-
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0, 10f);
             }
             else
             {
-                collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -3f);
-
+                collision.gameObject.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -10f);
             }
         }
     }

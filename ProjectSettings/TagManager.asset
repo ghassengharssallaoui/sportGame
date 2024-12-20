@@ -8,6 +8,8 @@ TagManager:
   - PlayerOne
   - PlayerTwo
   - ButtomEdge
+  - Enemy
+  - TopEdge
   layers:
   - Default
   - TransparentFX
