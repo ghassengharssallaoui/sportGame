@@ -233,6 +233,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778e5f8299695423e84e4176fc2b8850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skins:
+  - {fileID: 21300000, guid: 7916848c883f74f858bd037538ac1354, type: 3}
+  - {fileID: 21300000, guid: a77a2c493adbf46348a6c550d595da98, type: 3}
+  - {fileID: 21300000, guid: 872c4038505814773a797be13f572c71, type: 3}
+  playerOne: {fileID: 1079790852}
+  playerTwo: {fileID: 212524848}
   playerSpeed: 10
   playerOneStartPos: {x: -7, y: 0}
   playerTwoStartPos: {x: 7, y: 0}
@@ -1438,15 +1444,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0.023376942, b: 1, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!4 &212524849
@@ -4399,7 +4405,7 @@ Transform:
   m_GameObject: {fileID: 673891577}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: 3, z: 0}
+  m_LocalPosition: {x: 10, y: 2.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7071,15 +7077,15 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 8
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Sprite: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!1 &1096216943
@@ -7466,7 +7472,7 @@ Transform:
   m_GameObject: {fileID: 1127506300}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: -3, z: 0}
+  m_LocalPosition: {x: -10, y: -2.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -7880,7 +7886,7 @@ Transform:
   m_GameObject: {fileID: 1303672350}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 10, y: -3, z: 0}
+  m_LocalPosition: {x: 10, y: -2.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -8131,11 +8137,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d8c816a3d65d402cb9bc16d74bb23a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resultText: {fileID: 1967343627}
   slidersController: {fileID: 307068034}
   gameDuration: 180
-  isPaused: 0
-  isGameStarted: 0
   playerOneStars:
   - {fileID: 86572867}
   - {fileID: 2037313705}
@@ -8388,6 +8391,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 778e5f8299695423e84e4176fc2b8850, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skins:
+  - {fileID: 21300000, guid: 7916848c883f74f858bd037538ac1354, type: 3}
+  - {fileID: 21300000, guid: a77a2c493adbf46348a6c550d595da98, type: 3}
+  - {fileID: 21300000, guid: 872c4038505814773a797be13f572c71, type: 3}
+  playerOne: {fileID: 1079790852}
+  playerTwo: {fileID: 212524848}
   playerSpeed: 10
   playerOneStartPos: {x: -7, y: 0}
   playerTwoStartPos: {x: 7, y: 0}
@@ -11496,6 +11505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4127683d476634a0ca215d5dbe7a2de4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ballDragAfterWallHit: 0.5
   velocityMultiplierOnImpact: 0.8
   ballRandomMovementSpeed: 0.2
   defaultBallSpeed: 5
@@ -11894,7 +11904,7 @@ Transform:
   m_GameObject: {fileID: 2024643205}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: 3, z: 0}
+  m_LocalPosition: {x: -10, y: 2.5, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:

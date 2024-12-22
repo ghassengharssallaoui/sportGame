@@ -231,13 +231,12 @@ public class SlidersController : MonoBehaviour
 
     public void OpenSettings()
     {
-        if (!GameManager.Instance.isPaused)
-            GameManager.Instance.TogglePause();
+        GameManager.Instance.TransitionToState(GameState.Pause);
         gameObject.SetActive(true);
     }
     public void CloseSettings()
     {
-        GameManager.Instance.TogglePause();
+        GameManager.Instance.TransitionToState(GameState.GamePlay);
         gameObject.SetActive(false);
     }
 }

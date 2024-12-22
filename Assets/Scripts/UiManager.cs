@@ -7,7 +7,7 @@ public class UiManager : MonoBehaviour
     [SerializeField] private float animationDuration;
     [SerializeField] private int animationStartFontSize = 24; // Initial font size
     [SerializeField] private int animationEndFontSize = 44;
-    bool gameEnened = false;
+    // bool gameEnened = false;
 
     // UI Text references for player stats
     [SerializeField] private Text playerOneGoalsText, playerOneOversText, playerOneBongsText, playerOneStarsText;
@@ -18,6 +18,7 @@ public class UiManager : MonoBehaviour
     [SerializeField]
     private Text playerOneTotalStars, playerOneTotalPossission, playerOneTotalSaves,
      playerTwoTotalStars, playerTwoTotalPossission, playerTwoTotalSaves;
+    private bool showTime = true;
 
 
     private void OnEnable()
@@ -33,7 +34,9 @@ public class UiManager : MonoBehaviour
         GameManager.Instance.OnHalfTimeReached += UpdateHalfTimeUis;
         GameManager.Instance.OnHalfTimeEnded += UpdateAfterHalfTimeUis;
         GameManager.Instance.OnGameStart += UpdateStartUis;
-        GameManager.Instance.OnGoldenGoal += UpdateGlodenGoalUis;
+        GameManager.Instance.OnGoldenGoalReached += UpdateGlodenGoalUis;
+        GameManager.Instance.OnGoldenGoalStart += UpdateWhenGoldenGoalStartedTimeUis;
+
 
 
     }
@@ -51,7 +54,9 @@ public class UiManager : MonoBehaviour
         GameManager.Instance.OnHalfTimeReached -= UpdateHalfTimeUis;
         GameManager.Instance.OnHalfTimeEnded -= UpdateAfterHalfTimeUis;
         GameManager.Instance.OnGameStart -= UpdateStartUis;
-        GameManager.Instance.OnGoldenGoal -= UpdateGlodenGoalUis;
+        GameManager.Instance.OnGoldenGoalReached -= UpdateGlodenGoalUis;
+        GameManager.Instance.OnGoldenGoalStart -= UpdateWhenGoldenGoalStartedTimeUis;
+
 
 
 
@@ -59,8 +64,11 @@ public class UiManager : MonoBehaviour
     }
     private void UpdateGlodenGoalUis()
     {
+        /*
         gameEnened = true;
-        gameResultText.text += "Tie! Press Space to Head for the Golden Goal!";
+        */
+        gameResultText.text = "Tie! Press Space to Head for the Golden Goal!";
+        showTime = false;
     }
 
     // Update scoring UI and animation for goals, overs, bongs, and stars
@@ -168,15 +176,18 @@ public class UiManager : MonoBehaviour
     // Timer update method
     void UpdateTimerDisplay(float gameTime)
     {
-        if (gameEnened)
+        if (showTime)
+        {
+            float remainingTime = Mathf.Clamp(GameManager.Instance.GameDuration() - gameTime, 0, GameManager.Instance.GameDuration()); // Ensure it doesn't go below 0
+            int minutes = Mathf.FloorToInt(remainingTime / 60);
+            int seconds = Mathf.FloorToInt(remainingTime % 60);
+            timerText.text = $"{minutes:D2}:{seconds:D2}";
+        }
+        else
         {
             timerText.text = "";
-            return;
         }
-        float remainingTime = Mathf.Clamp(GameManager.Instance.GameDuration() - gameTime, 0, GameManager.Instance.GameDuration()); // Ensure it doesn't go below 0
-        int minutes = Mathf.FloorToInt(remainingTime / 60);
-        int seconds = Mathf.FloorToInt(remainingTime % 60);
-        timerText.text = $"{minutes:D2}:{seconds:D2}";
+
     }
     private void UpdateHalfTimeUis()
     {
@@ -191,36 +202,21 @@ public class UiManager : MonoBehaviour
     {
         gameResultText.text = "";
     }
-
-    private void UpdateEndGameUis(bool isGoldenGoal)
+    private void UpdateWhenGoldenGoalStartedTimeUis()
     {
-        if (isGoldenGoal)
+        gameResultText.text = "";
+        timerText.text = "";
+    }
+    private void UpdateEndGameUis()
+    {
+        if (ScoreManager.Instance.GetPlayerOneScore() > ScoreManager.Instance.GetPlayerTwoScore())
         {
-            if (ScoreManager.Instance.GetPlayerOneScore() > ScoreManager.Instance.GetPlayerTwoScore())
-            {
-                gameResultText.text += "\n Player One Wins";
-
-            }
-            else if (ScoreManager.Instance.GetPlayerOneScore() < ScoreManager.Instance.GetPlayerTwoScore())
-            {
-                gameResultText.text += "\n Player Two Wins";
-
-            }
+            gameResultText.text += "\n Player One Wins";
 
         }
-        else
+        else if (ScoreManager.Instance.GetPlayerOneScore() < ScoreManager.Instance.GetPlayerTwoScore())
         {
-            gameResultText.text = "Time is up!";
-            if (ScoreManager.Instance.GetPlayerOneScore() > ScoreManager.Instance.GetPlayerTwoScore())
-            {
-                gameResultText.text += "\n Player One Wins";
-
-            }
-            else if (ScoreManager.Instance.GetPlayerOneScore() < ScoreManager.Instance.GetPlayerTwoScore())
-            {
-                gameResultText.text += "\n Player Two Wins";
-
-            }
+            gameResultText.text += "\n Player Two Wins";
 
         }
     }

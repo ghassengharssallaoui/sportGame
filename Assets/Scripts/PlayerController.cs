@@ -1,9 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    [SerializeField]
+    private Sprite[] skins;
+
+    [SerializeField]
+    private SpriteRenderer playerOne, playerTwo;
+
+
     [HideInInspector]
     public float playerSpeed = 15f;
     Rigidbody2D rb;
@@ -23,25 +31,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Range(0f, 1f)]
     float staminaRecoveryOnGoldenGoal = 0.15f, staminaRecoveryOnHalfTime = 0.3f;
+    private float xBoundary = 10f;
+    private float yBoundary = 4.35f;
     private void OnEnable()
     {
         GameManager.Instance.OnGoalHit += ResetPosition;
         GameManager.Instance.OnOverHit += ResetPosition;
-        GameManager.Instance.OnHalfTimeReached += HalfTime;
-        GameManager.Instance.OnGoldenGoal += GoldenGoal;
+        GameManager.Instance.OnHalfTimeEnded += HalfTime;
+        GameManager.Instance.OnGoldenGoalStart += GoldenGoal;
     }
     private void OnDisable()
     {
         GameManager.Instance.OnGoalHit -= ResetPosition;
         GameManager.Instance.OnOverHit += ResetPosition;
-        GameManager.Instance.OnHalfTimeReached -= HalfTime;
-        GameManager.Instance.OnGoldenGoal += GoldenGoal;
+        GameManager.Instance.OnHalfTimeEnded -= HalfTime;
+        GameManager.Instance.OnGoldenGoalStart += GoldenGoal;
 
     }
     void Start()
     {
         currentStamina = maxStamina;
         rb = GetComponent<Rigidbody2D>();
+        playerOne.sprite = skins[SkinManager.PlayerOneSkinIndex];
+        playerTwo.sprite = skins[SkinManager.PlayerTwoSkinIndex];
     }
     void Update()
     {
@@ -70,8 +82,8 @@ public class PlayerController : MonoBehaviour
 
         Vector2 previousPosition = rb.position;
         Vector2 newPosition = new Vector2(
-            Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * Time.fixedDeltaTime * currentStamina, -10f, 10f),
-            Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime * currentStamina, -4.35f, 4.35f)
+            Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
+            Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
         );
 
         // Check if movement occurs
@@ -112,7 +124,7 @@ public class PlayerController : MonoBehaviour
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Ensure health does not exceed maxHealth
 
-        float healthRatio = (float)currentStamina / maxStamina;
-        staminaBar.transform.localScale = new Vector3(healthRatio, 1f, 1f);
+        float staminaRatio = (float)currentStamina / maxStamina;
+        staminaBar.transform.localScale = new Vector3(staminaRatio, 1f, 1f);
     }
 }

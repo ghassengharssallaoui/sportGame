@@ -38,7 +38,7 @@ public class CameraController : MonoBehaviour
 
         transform.localPosition = originalPosition;
     }
-    private void StopCameraMovement(bool isGoldenGoal)
+    private void StopCameraMovement()
     {
         elapsed = 100f;
         transform.localPosition = new Vector3(0, 0, -10);

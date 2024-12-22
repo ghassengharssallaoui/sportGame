@@ -39,7 +39,6 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.OnStarsHit += AddStarScore;
         GameManager.Instance.OnKeeperHit += AddKeeperStatistics;
         GameManager.Instance.OnPlayerHit += AddPlayerStatistics;
-        GameManager.Instance.OnGoldenGoal += HandleGoldenGoalStart;
     }
 
     private void OnDisable()
@@ -49,22 +48,9 @@ public class ScoreManager : MonoBehaviour
         GameManager.Instance.OnBongHit -= AddBongScore;
         GameManager.Instance.OnStarsHit -= AddStarScore;
         GameManager.Instance.OnKeeperHit -= AddKeeperStatistics;
-        GameManager.Instance.OnPlayerHit -= AddPlayerStatistics;
-        GameManager.Instance.OnGoldenGoal -= HandleGoldenGoalStart;
-    }
-    private void HandleGoldenGoalStart()
-    {
-        // Subscribe to the scoring events now that golden goal mode is active
-        GameManager.Instance.OnGoalHit += OnGoldenGoalScore;
-        GameManager.Instance.OnOverHit += OnGoldenGoalScore;
-        GameManager.Instance.OnBongHit += (playerScore, controller) => OnGoldenGoalScore(playerScore);
-        GameManager.Instance.OnStarsHit += (playerScore, star) => OnGoldenGoalScore(playerScore);
+
     }
 
-    private void OnGoldenGoalScore(int playerScored)
-    {
-        GameManager.Instance.EndGame(true);
-    }
     // Add score for a goal hit
     private void AddGoalScore(int scoringPlayer)
     {

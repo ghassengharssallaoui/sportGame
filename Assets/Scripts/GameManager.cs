@@ -3,14 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI; // Required for SceneManager
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] Text resultText;
-
-    [SerializeField]
-    SlidersController1 slidersController;
+    [SerializeField] private SlidersController1 slidersController;
 
     public event Action<int> OnGoalHit;
     public event Action<int> OnOverHit;
@@ -19,29 +15,27 @@ public class GameManager : MonoBehaviour
     public event Action<int> OnKeeperHit;
     public event Action<int> OnPlayerHit;
     public event Action OnGameStart;
-    public event Action<bool> OnGameEnd;
-    public event Action OnGoldenGoal;
+    public event Action OnGameEnd;
     public event Action OnHalfTimeReached;
-    private bool isHalfTimeReached = false; // Tracks if halftime logic has been executed
-    private bool isInHalftime = false; // Tracks if the game is in halftime
     public event Action OnHalfTimeEnded;
-
-
-
+    public event Action OnGoldenGoalReached;
+    public event Action OnGoldenGoalStart;
 
     public static GameManager Instance;
 
     [SerializeField] private float gameDuration = 180f;
     private float gameTime = 0f;
-    public bool isPaused = false;
-    public bool isGameStarted = false;
-    private bool isGameEnded = false; // Track if the game has ended
+    private GameState currentState = GameState.Initialization;
     private bool isGoldenGoalActive = false;
+    private bool isHalfTimeReached = false;
+    [SerializeField] private StarController[] playerOneStars;
+    [SerializeField] private StarController[] playerTwoStars;
 
-    [SerializeField] private StarController[] playerOneStars; // Stars belonging to Player 1
-    [SerializeField] private StarController[] playerTwoStars; // Stars belonging to Player 2
     public float GameTime() => gameTime;
     public float GameDuration() => gameDuration;
+    public GameState CurrentState() => currentState;
+    public StarController[] GetPlayerOneStars() => playerOneStars;
+    public StarController[] GetPlayerTwoStars() => playerTwoStars;
 
     private void Awake()
     {
@@ -51,95 +45,138 @@ public class GameManager : MonoBehaviour
         }
         else if (Instance != this)
         {
-            Destroy(gameObject);  // Ensure only one instance exists.
+            Destroy(gameObject);
         }
     }
 
     private void Start()
     {
         slidersController.LoadSettings();
-        Time.timeScale = 0f; // Pause the game at the start.
+        TransitionToState(GameState.WaitingForStart);
     }
-
     private void Update()
     {
-        if (isGoldenGoalActive && Input.GetKeyDown(KeyCode.Space))
+        switch (currentState)
         {
-            Time.timeScale = 1f;
-            resultText.text = "";
+            case GameState.WaitingForStart:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    OnGameStart?.Invoke();
+                    TransitionToState(GameState.GamePlay);
+                }
+                break;
+
+            case GameState.GamePlay:
+                HandleGamePlayState();
+                break;
+
+            case GameState.Pause:
+                if (Input.GetKeyDown(KeyCode.P))
+                {
+                    TransitionToState(GameState.GamePlay);
+                }
+                break;
+
+            case GameState.Halftime:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    OnHalfTimeEnded?.Invoke();
+                    TransitionToState(GameState.GamePlay);
+                }
+                break;
+
+            case GameState.GoldenGoal:
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    OnGoldenGoalStart?.Invoke();
+                    TransitionToState(GameState.GamePlay);
+                }
+                break;
+
+            case GameState.GameEnd:
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    TransitionToState(GameState.Restart);
+                }
+                break;
+
+            case GameState.Restart:
+                RestartGame();
+                break;
         }
-        if (gameTime >= gameDuration && !isGoldenGoalActive) // Time is up, check scores
+    }
+    private void HandleGamePlayState()
+    {
+        gameTime += Time.deltaTime;
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            TransitionToState(GameState.Pause);
+        }
+
+        if (gameTime >= gameDuration && !isGoldenGoalActive)
         {
             if (ScoreManager.Instance.GetPlayerOneScore() == ScoreManager.Instance.GetPlayerTwoScore())
             {
-                TriggerGoldenGoal();
+                isGoldenGoalActive = true;
+                TransitionToState(GameState.GoldenGoal);
             }
             else
             {
-                EndGame(false);
+                TransitionToState(GameState.GameEnd);
             }
         }
-        if (isInHalftime && Input.GetKeyDown(KeyCode.Space))
-        {
-            isInHalftime = false; // End halftime state
-            Time.timeScale = 1f;  // Resume game from halftime
-                                  //            Debug.Log("Halftime over, game resumed!");
-            OnHalfTimeEnded?.Invoke();
-        }
-        // Start the game when Space is pressed.
-        if (!isGameStarted && Input.GetKeyDown(KeyCode.Space))
-        {
-            isGameStarted = true;
-            Time.timeScale = 1f; // Resume game time.
-            OnGameStart?.Invoke();
-        }
 
-        // Check for game restart if the game has ended.
-        if (isGameEnded && Input.GetKeyDown(KeyCode.Space))
+        if (gameTime >= gameDuration / 2 && !isHalfTimeReached)
         {
-            RestartGame();
+            isHalfTimeReached = true;
+            OnHalfTimeReached?.Invoke();
+            TransitionToState(GameState.Halftime);
         }
-
-        if (isGameStarted && !isGameEnded && !isInHalftime)
+        if (isGoldenGoalActive)
         {
-            if (Input.GetKeyDown(KeyCode.P))
+            if (ScoreManager.Instance.GetPlayerOneScore() != ScoreManager.Instance.GetPlayerTwoScore())
             {
-                TogglePause();
+                TransitionToState(GameState.GameEnd);
             }
-
-            gameTime += Time.deltaTime;
-            if (!isHalfTimeReached && gameTime >= gameDuration / 2)
-            {
-                isHalfTimeReached = true; // Prevent event from being raised again
-                OnHalfTimeReached?.Invoke(); // Raise the halftime event
-                                             //                Debug.Log("Halftime reached!");
-                HandleHalftime();
-            }
-
         }
     }
-    private void TriggerGoldenGoal()
-    {
-        isGoldenGoalActive = true;
-        Time.timeScale = 0;
-        OnGoldenGoal?.Invoke();
-    }
-    private void HandleHalftime()
-    {
-        //        Debug.Log("Halftime reached! Pausing the game...");
-        Time.timeScale = 0f; // Pause the game during halftime
-        isInHalftime = true; // Set halftime state
 
-        // Display halftime message (implement this in your UI)
-        //        Debug.Log("Press Space to resume the game.");
-    }
-
-    public void TogglePause()
+    public void TransitionToState(GameState newState)
     {
-        if (isGameStarted && !isInHalftime) // Don't toggle pause if it's halftime
+        currentState = newState;
+
+        switch (newState)
         {
-            isPaused = !isPaused;
-            Time.timeScale = isPaused ? 0f : 1f;
+            case GameState.WaitingForStart:
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.GamePlay:
+                Time.timeScale = 1f;
+                break;
+
+            case GameState.Pause:
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.Halftime:
+                Time.timeScale = 0f;
+                break;
+
+            case GameState.GoldenGoal:
+                Time.timeScale = 0f;
+                OnGoldenGoalReached?.Invoke();
+                break;
+
+            case GameState.GameEnd:
+                Time.timeScale = 0f;
+                OnGameEnd?.Invoke();
+                break;
+
+            case GameState.Restart:
+                RestartGame();
+                break;
         }
     }
 
@@ -206,21 +243,8 @@ public class GameManager : MonoBehaviour
             star.ResetStar();
         }
     }
-
-    public StarController[] GetPlayerOneStars() => playerOneStars;
-    public StarController[] GetPlayerTwoStars() => playerTwoStars;
-
-    public void EndGame(bool isGoldenGoal)
-    {
-        isGameEnded = true;
-        Time.timeScale = 0f; // Stop the game.
-        OnGameEnd?.Invoke(isGoldenGoal);
-        //        Debug.Log("Game has ended. Press Space to restart.");
-    }
-
     private void RestartGame()
     {
-        isGameEnded = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name); // Reload the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
