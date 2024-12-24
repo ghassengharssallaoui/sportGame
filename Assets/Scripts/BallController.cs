@@ -6,7 +6,7 @@ public class BallController : MonoBehaviour
 {
     [SerializeField]
     [Range(0f, 1f)]
-    float ballDragAfterWallHit = 0.5f;
+    // float ballDragAfterWallHit = 0.5f;
     [HideInInspector]
     public float velocityMultiplierOnImpact = 0.95f;
     [HideInInspector]
@@ -151,7 +151,7 @@ public class BallController : MonoBehaviour
         }
         else if (collision.gameObject.name == "Player One" || collision.gameObject.name == "Player Two")
         {
-            ballRigidbody.drag = 0;
+            // ballRigidbody.drag = 0;
 
             decreaseBallVelocity = false;
             applyImpactForce = false; // Reset to prevent unintended behavior
@@ -167,9 +167,9 @@ public class BallController : MonoBehaviour
         }
         else if (collision.gameObject.name.Contains("Walls"))
         {
-            ballRigidbody.drag = ballDragAfterWallHit;
-            Vector2 newDirection = ballRigidbody.velocity.normalized;
-            ballRigidbody.velocity = newDirection * defaultBallSpeed;
+            // ballRigidbody.drag = ballDragAfterWallHit;
+            //Vector2 newDirection = ballRigidbody.velocity.normalized;
+            // ballRigidbody.velocity = newDirection * defaultBallSpeed;
         }
     }
 

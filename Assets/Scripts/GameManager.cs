@@ -6,6 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField]
+    private SpriteRenderer playerOne, playerTwo;
+    private TeamsManager teamsManager;
+
+
     [SerializeField] private SlidersController1 slidersController;
 
     public event Action<int> OnGoalHit;
@@ -51,8 +56,11 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        teamsManager = TeamsManager.Instance;
         slidersController.LoadSettings();
         TransitionToState(GameState.WaitingForStart);
+        playerOne.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].skin;
+        playerTwo.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].skin;
     }
     private void Update()
     {

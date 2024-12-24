@@ -5,11 +5,6 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private Sprite[] skins;
-
-    [SerializeField]
-    private SpriteRenderer playerOne, playerTwo;
 
 
     [HideInInspector]
@@ -52,8 +47,7 @@ public class PlayerController : MonoBehaviour
     {
         currentStamina = maxStamina;
         rb = GetComponent<Rigidbody2D>();
-        playerOne.sprite = skins[SkinManager.PlayerOneSkinIndex];
-        playerTwo.sprite = skins[SkinManager.PlayerTwoSkinIndex];
+
     }
     void Update()
     {
@@ -81,22 +75,43 @@ public class PlayerController : MonoBehaviour
         if (Time.timeScale == 0) return; // Skip logic if the game is paused
 
         Vector2 previousPosition = rb.position;
-        Vector2 newPosition = new Vector2(
-            Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
-            Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
-        );
-
-        // Check if movement occurs
-        if (previousPosition != newPosition)
+        if (tag == "PlayerOne")
         {
-            AdjustStamina(-staminaDrainOnMovement * movement.magnitude * Time.fixedDeltaTime); // Adjust damage value as needed
-        }
-        else
-        {
-            AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime); // Adjust health restoration rate as needed
-        }
+            Vector2 newPosition = new Vector2(
+                Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
+                Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
+            );
 
-        rb.MovePosition(newPosition);
+            // Check if movement occurs
+            if (previousPosition != newPosition)
+            {
+                AdjustStamina(-staminaDrainOnMovement * movement.magnitude * Time.fixedDeltaTime); // Adjust damage value as needed
+            }
+            else
+            {
+                AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime); // Adjust health restoration rate as needed
+            }
+
+            rb.MovePosition(newPosition);
+        }
+        if (tag == "PlayerTwo")
+        {
+            Vector2 newPosition = new Vector2(
+                 Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
+                 Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
+             );
+            // Check if movement occurs
+            if (previousPosition != newPosition)
+            {
+                AdjustStamina(-staminaDrainOnMovement * movement.magnitude * Time.fixedDeltaTime); // Adjust damage value as needed
+            }
+            else
+            {
+                AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime); // Adjust health restoration rate as needed
+            }
+
+            rb.MovePosition(newPosition);
+        }
     }
 
     void ResetPosition(int playerScored)
