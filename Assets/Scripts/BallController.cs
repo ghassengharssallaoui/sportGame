@@ -149,16 +149,25 @@ public class BallController : MonoBehaviour
             decreaseBallVelocity = true;
             applyImpactForce = true; // Ready to apply impact force
         }
-        else if (collision.gameObject.name == "Player One" || collision.gameObject.name == "Player Two")
+        else if (collision.gameObject.name == "Player One")
         {
             // ballRigidbody.drag = 0;
 
             decreaseBallVelocity = false;
             applyImpactForce = false; // Reset to prevent unintended behavior
-            // Calculate new velocity after collision with player
-            Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
+                                      // Calculate new velocity after collision with player
+                                      // Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
             Vector2 newDirection = ballRigidbody.velocity.normalized;
-            ballRigidbody.velocity = newDirection * defaultBallSpeed;
+            ballRigidbody.velocity = newDirection * defaultBallSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].strength / 5;
+        }
+        else if (collision.gameObject.name == "Player Two")
+        {
+            decreaseBallVelocity = false;
+            applyImpactForce = false; // Reset to prevent unintended behavior
+                                      // Calculate new velocity after collision with player
+                                      // Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
+            Vector2 newDirection = ballRigidbody.velocity.normalized;
+            ballRigidbody.velocity = newDirection * defaultBallSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].strength / 5;
         }
         else if (collision.gameObject.name.Contains("Star"))
         {

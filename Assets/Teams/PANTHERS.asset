@@ -17,6 +17,6 @@ MonoBehaviour:
   skin: {fileID: -920628552, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
   speed: 8
   strength: 7
-  attack: 6
-  defense: 6
+  attack: 1
+  defense: 10
   durability: 8

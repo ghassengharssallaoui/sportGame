@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
 
-
+    private Vector2 previousPosition;
     [HideInInspector]
     public float playerSpeed = 15f;
     Rigidbody2D rb;
@@ -74,44 +74,77 @@ public class PlayerController : MonoBehaviour
     {
         if (Time.timeScale == 0) return; // Skip logic if the game is paused
 
-        Vector2 previousPosition = rb.position;
+        previousPosition = rb.position;
+
+        // Handle movement based on player tag
         if (tag == "PlayerOne")
         {
-            Vector2 newPosition = new Vector2(
-                Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
-                Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
-            );
-
-            // Check if movement occurs
-            if (previousPosition != newPosition)
-            {
-                AdjustStamina(-staminaDrainOnMovement * movement.magnitude * Time.fixedDeltaTime); // Adjust damage value as needed
-            }
-            else
-            {
-                AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime); // Adjust health restoration rate as needed
-            }
-
-            rb.MovePosition(newPosition);
+            MovePlayer(TeamsManager.Instance.PlayerOneIndex, isPlayerOne: true);
         }
-        if (tag == "PlayerTwo")
+        else if (tag == "PlayerTwo")
         {
-            Vector2 newPosition = new Vector2(
-                 Mathf.Clamp(rb.position.x + movement.normalized.x * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -xBoundary, xBoundary),
-                 Mathf.Clamp(rb.position.y + movement.normalized.y * playerSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].speed / 5 * Time.fixedDeltaTime * currentStamina, -yBoundary, yBoundary)
-             );
-            // Check if movement occurs
-            if (previousPosition != newPosition)
-            {
-                AdjustStamina(-staminaDrainOnMovement * movement.magnitude * Time.fixedDeltaTime); // Adjust damage value as needed
-            }
-            else
-            {
-                AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime); // Adjust health restoration rate as needed
-            }
-
-            rb.MovePosition(newPosition);
+            MovePlayer(TeamsManager.Instance.PlayerTwoIndex, isPlayerOne: false);
         }
+    }
+
+    // Local method to handle player movement
+    void MovePlayer(int teamIndex, bool isPlayerOne)
+    {
+        float adjustedSpeed = playerSpeed * TeamsManager.Instance.Teams[teamIndex].speed / 5 * Time.fixedDeltaTime * currentStamina;
+
+        // Determine the strengthMultiplier based on the player and direction
+        float strengthMultiplier = 1;
+
+        if (isPlayerOne)
+        {
+            // PlayerOne applies strength when moving right (movement.x > 0)
+            if (movement.x > 0)
+            {
+                // Debug.Log("moving right" + TeamsManager.Instance.Teams[teamIndex].attack);
+                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].attack;
+            }
+            else if (movement.x < 0)
+            {
+                //   Debug.Log("moving left" + TeamsManager.Instance.Teams[teamIndex].defense);
+                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].defense;
+            }
+        }
+        else
+        {
+            // PlayerTwo applies strength when moving left (movement.x < 0)
+            if (movement.x < 0)
+            {
+                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].attack;
+            }
+            else if (movement.x > 0)
+            {
+                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].defense;
+            }
+        }
+        strengthMultiplier /= 5;
+        Vector2 newPosition = new Vector2(
+            Mathf.Clamp(rb.position.x + movement.normalized.x * adjustedSpeed * strengthMultiplier, -xBoundary, xBoundary),
+            Mathf.Clamp(rb.position.y + movement.normalized.y * adjustedSpeed * strengthMultiplier, -yBoundary, yBoundary)
+        );
+
+        HandleStaminaAdjustment(previousPosition, newPosition, movement.magnitude);
+        rb.MovePosition(newPosition);
+    }
+
+    // Local method to adjust stamina based on movement
+    void HandleStaminaAdjustment(Vector2 previous, Vector2 current, float movementMagnitude)
+    {
+
+
+        if (previous != current)
+        {
+            AdjustStamina(-staminaDrainOnMovement * movementMagnitude * Time.fixedDeltaTime);
+        }
+        else
+        {
+            AdjustStamina(staminaRecoveryRate * Time.fixedDeltaTime);
+        }
+
     }
 
     void ResetPosition(int playerScored)
@@ -136,6 +169,28 @@ public class PlayerController : MonoBehaviour
     }
     private void AdjustStamina(float amount)
     {
+        if (tag == "PlayerOne")
+        {
+            if (amount > 0)
+            {
+                amount *= (TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].durability / 5);
+            }
+            else if (amount < 0)
+            {
+                amount /= (TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].durability / 5);
+            }
+        }
+        else
+        {
+            if (amount > 0)
+            {
+                amount *= (TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].durability / 5);
+            }
+            else if (amount < 0)
+            {
+                amount /= (TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].durability / 5);
+            }
+        }
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Ensure health does not exceed maxHealth
 

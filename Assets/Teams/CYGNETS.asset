@@ -15,8 +15,8 @@ MonoBehaviour:
   name: UPPER SWAN CYGNETS
   badge: {fileID: -924861280, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
   skin: {fileID: 974131006, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
-  speed: 9
-  strength: 3
-  attack: 4
+  speed: 5
+  strength: 5
+  attack: 5
   defense: 5
-  durability: 9
+  durability: 1
