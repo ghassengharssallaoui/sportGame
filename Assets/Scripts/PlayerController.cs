@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public float playerSpeed = 15f;
     Rigidbody2D rb;
-    Vector2 movement;
+    Vector2 input;
     [SerializeField] Vector2 playerOneStartPos = new Vector2(7, 0);
     [SerializeField] Vector2 playerTwoStartPos = new Vector2(-7, 0);
     private int maxStamina = 1;
@@ -53,13 +53,13 @@ public class PlayerController : MonoBehaviour
     {
         if (gameObject.tag == "PlayerOne")
         {
-            movement.x = Input.GetAxisRaw("PlayerOneHorizontal");
-            movement.y = Input.GetAxisRaw("PlayerOneVertical");
+            input.x = Input.GetAxisRaw("PlayerOneHorizontal");
+            input.y = Input.GetAxisRaw("PlayerOneVertical");
         }
         else
         {
-            movement.x = Input.GetAxisRaw("Horizontal");
-            movement.y = Input.GetAxisRaw("Vertical");
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
         }
     }
     private void HalfTime()
@@ -93,41 +93,53 @@ public class PlayerController : MonoBehaviour
         float adjustedSpeed = playerSpeed * TeamsManager.Instance.Teams[teamIndex].speed / 5 * Time.fixedDeltaTime * currentStamina;
 
         // Determine the strengthMultiplier based on the player and direction
-        float strengthMultiplier = 1;
+        float attackDefenseModifier = 1;
 
         if (isPlayerOne)
         {
             // PlayerOne applies strength when moving right (movement.x > 0)
-            if (movement.x > 0)
+            if (input.x > 0)
             {
                 // Debug.Log("moving right" + TeamsManager.Instance.Teams[teamIndex].attack);
-                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].attack;
+                attackDefenseModifier = TeamsManager.Instance.Teams[teamIndex].attack;
             }
-            else if (movement.x < 0)
+            else if (input.x < 0)
             {
                 //   Debug.Log("moving left" + TeamsManager.Instance.Teams[teamIndex].defense);
-                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].defense;
+                attackDefenseModifier = TeamsManager.Instance.Teams[teamIndex].defense;
             }
         }
         else
         {
             // PlayerTwo applies strength when moving left (movement.x < 0)
-            if (movement.x < 0)
+            if (input.x < 0)
             {
-                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].attack;
+                attackDefenseModifier = TeamsManager.Instance.Teams[teamIndex].attack;
             }
-            else if (movement.x > 0)
+            else if (input.x > 0)
             {
-                strengthMultiplier = TeamsManager.Instance.Teams[teamIndex].defense;
+                attackDefenseModifier = TeamsManager.Instance.Teams[teamIndex].defense;
             }
         }
-        strengthMultiplier /= 5;
+        if (attackDefenseModifier != 1) attackDefenseModifier /= 5;
+
+
+
+        Vector2 moveVector = input;
+
+        // Only normalize if both horizontal and vertical speeds are non-zero
+        if (rb.velocity.x != 0 && rb.velocity.y != 0)
+        {
+            moveVector = moveVector.normalized;
+        }
+
+
         Vector2 newPosition = new Vector2(
-            Mathf.Clamp(rb.position.x + movement.normalized.x * adjustedSpeed * strengthMultiplier, -xBoundary, xBoundary),
-            Mathf.Clamp(rb.position.y + movement.normalized.y * adjustedSpeed * strengthMultiplier, -yBoundary, yBoundary)
+            Mathf.Clamp(rb.position.x + moveVector.x * adjustedSpeed * attackDefenseModifier, -xBoundary, xBoundary),
+            Mathf.Clamp(rb.position.y + moveVector.y * adjustedSpeed * attackDefenseModifier, -yBoundary, yBoundary)
         );
 
-        HandleStaminaAdjustment(previousPosition, newPosition, movement.magnitude);
+        HandleStaminaAdjustment(previousPosition, newPosition, input.magnitude);
         rb.MovePosition(newPosition);
     }
 
