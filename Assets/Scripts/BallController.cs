@@ -133,6 +133,7 @@ public class BallController : MonoBehaviour
             {
                 if (applyImpactForce)
                 {
+
                     ballRigidbody.velocity += ballRigidbody.velocity.normalized * impactForce;
                     applyImpactForce = false; // Ensure the force is applied only once
                 }
@@ -144,30 +145,49 @@ public class BallController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+
         if (collision.gameObject.name.Contains("Keeper") || collision.gameObject.name.Contains("Bong"))
         {
-            decreaseBallVelocity = true;
-            applyImpactForce = true; // Ready to apply impact force
+            if (collision.gameObject.name.Contains("Keeper"))
+            {
+                if (collision.gameObject.tag == "PlayerOne")
+                    impactForce *= TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].defense / 5;
+                else
+                    impactForce *= TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].defense / 5;
+                decreaseBallVelocity = true;
+                applyImpactForce = true; // Ready to apply impact force
+            }
         }
         else if (collision.gameObject.name == "Player One")
         {
-            // ballRigidbody.drag = 0;
+
 
             decreaseBallVelocity = false;
-            applyImpactForce = false; // Reset to prevent unintended behavior
-                                      // Calculate new velocity after collision with player
-                                      // Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
+            applyImpactForce = false;
+
             Vector2 newDirection = ballRigidbody.velocity.normalized;
-            ballRigidbody.velocity = newDirection * defaultBallSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].strength / 5;
+            float attackMultiplier = Vector2.Dot(newDirection, Vector2.right) > 0
+                ? TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].attack / 5
+                : 1;
+
+            ballRigidbody.velocity = newDirection * defaultBallSpeed * attackMultiplier * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].strength / 5;
+
         }
         else if (collision.gameObject.name == "Player Two")
         {
+
+
             decreaseBallVelocity = false;
-            applyImpactForce = false; // Reset to prevent unintended behavior
-                                      // Calculate new velocity after collision with player
-                                      // Vector2 playerVelocity = collision.rigidbody.velocity; // Player's current velocity
+            applyImpactForce = false;
+
             Vector2 newDirection = ballRigidbody.velocity.normalized;
-            ballRigidbody.velocity = newDirection * defaultBallSpeed * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].strength / 5;
+            float attackMultiplier = Vector2.Dot(newDirection, Vector2.left) > 0
+                ? TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].attack / 5
+                : 1;
+
+            ballRigidbody.velocity = newDirection * defaultBallSpeed * attackMultiplier * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].strength / 5;
+
+
         }
         else if (collision.gameObject.name.Contains("Star"))
         {
@@ -181,5 +201,8 @@ public class BallController : MonoBehaviour
             // ballRigidbody.velocity = newDirection * defaultBallSpeed;
         }
     }
+
+
+
 
 }
