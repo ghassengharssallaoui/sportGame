@@ -5,7 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-
+    public bool canMove = true;
+    public AbilityManager abilityManager;
+    public GameObject ball;
     private Vector2 previousPosition;
     [HideInInspector]
     public float playerSpeed = 15f;
@@ -49,18 +51,42 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
 
     }
+
     void Update()
     {
+        if (!canMove) return;
+        if (GameManager.Instance.CurrentState() != GameState.GamePlay) return;
+
         if (gameObject.tag == "PlayerOne")
         {
             input.x = Input.GetAxisRaw("PlayerOneHorizontal");
             input.y = Input.GetAxisRaw("PlayerOneVertical");
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                abilityManager.ActivateNextOneShotAbilityPlayerOne(gameObject, ball);
+            }
+
+            if (Input.GetKeyDown(KeyCode.LeftCommand))
+            {
+                abilityManager.ActivateReusableAbilityPlayerOne(gameObject, ball);
+            }
         }
         else
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                abilityManager.ActivateNextOneShotAbilityPlayerTwo(gameObject, ball);
+            }
+
+            if (Input.GetKeyDown(KeyCode.RightCommand))
+            {
+                abilityManager.ActivateReusableAbilityPlayerTwo(gameObject, ball);
+            }
         }
+
+
     }
     private void HalfTime()
     {
@@ -121,7 +147,7 @@ public class PlayerController : MonoBehaviour
                 attackDefenseModifier = TeamsManager.Instance.Teams[teamIndex].defense;
             }
         }
-        if (attackDefenseModifier != 1) attackDefenseModifier /= 5;
+        if (attackDefenseModifier != 1) attackDefenseModifier /= 7;
 
 
 
@@ -132,7 +158,16 @@ public class PlayerController : MonoBehaviour
         {
             moveVector = moveVector.normalized;
         }
-
+        if (gameObject.transform.localScale.x > 1.5f)
+        {
+            xBoundary = 9.65f;
+            yBoundary = 4f;
+        }
+        else
+        {
+            xBoundary = 10f;
+            yBoundary = 4.35f;
+        }
 
         Vector2 newPosition = new Vector2(
             Mathf.Clamp(rb.position.x + moveVector.x * adjustedSpeed * attackDefenseModifier, -xBoundary, xBoundary),
@@ -140,7 +175,7 @@ public class PlayerController : MonoBehaviour
         );
 
         HandleStaminaAdjustment(previousPosition, newPosition, input.magnitude);
-        rb.MovePosition(newPosition);
+        if (canMove) rb.MovePosition(newPosition);
     }
 
     // Local method to adjust stamina based on movement

@@ -16,7 +16,11 @@ MonoBehaviour:
   badge: {fileID: -924861280, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
   skin: {fileID: 974131006, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
   speed: 5
-  strength: 4
-  attack: 4
-  defense: 6
-  durability: 8
+  strength: 5
+  attack: 1
+  defense: 9
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
+  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}

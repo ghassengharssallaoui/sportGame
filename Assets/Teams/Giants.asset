@@ -10,13 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
-  m_Name: GIANTS
+  m_Name: Giants
   m_EditorClassIdentifier: 
   name: KELMSCOTT GIANTS
   badge: {fileID: 21558931, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
   skin: {fileID: -1764009080, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
-  speed: 4
-  strength: 7
-  attack: 7
-  defense: 6
-  durability: 4
+  speed: 5
+  strength: 5
+  attack: 9
+  defense: 1
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
+  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}
+  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}

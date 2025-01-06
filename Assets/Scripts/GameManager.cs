@@ -41,6 +41,8 @@ public class GameManager : MonoBehaviour
     public GameState CurrentState() => currentState;
     public StarController[] GetPlayerOneStars() => playerOneStars;
     public StarController[] GetPlayerTwoStars() => playerTwoStars;
+    [SerializeField] private GameObject playerOneKeeper;
+    [SerializeField] private GameObject playerTwoKeeper;
 
     private void Awake()
     {
@@ -254,5 +256,15 @@ public class GameManager : MonoBehaviour
     private void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public GameObject GetKeeperForPlayer(GameObject player)
+    {
+        // Determine which keeper to return based on player
+        if (player.CompareTag("PlayerOne"))
+            return playerOneKeeper;
+        else if (player.CompareTag("PlayerTwo"))
+            return playerTwoKeeper;
+
+        return null; // Default case if no match
     }
 }

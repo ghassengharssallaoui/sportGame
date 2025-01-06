@@ -8,7 +8,7 @@ public class PlayerStaminaBarPositionController : MonoBehaviour
     void FixedUpdate()
     {
         transform.position = new Vector3(player.transform.position.x, player.transform.position.y
-            + 1f, player.transform.position.z);
+            + (player.transform.localScale.y - 0.3f), player.transform.position.z);
 
     }
 }

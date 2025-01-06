@@ -12,4 +12,6 @@ public class Team : ScriptableObject
     public float attack;
     public float defense;
     public float durability;
+    public BaseAbility reusableAbility;
+    public List<BaseAbility> oneShotAbilities;
 }
