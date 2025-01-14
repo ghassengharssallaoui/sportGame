@@ -5,7 +5,6 @@ using UnityEngine;
 public class GrowthAbility : BaseAbility
 {
     public float sizeMultiplier = 1.5f; // How much to increase the size
-    public float duration = 10f; // Duration of the size boost in seconds
 
     public override void Execute(GameObject player, GameObject ball)
     {

@@ -234,7 +234,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  abilityManager: {fileID: 140177738}
   ball: {fileID: 1999179637}
   playerSpeed: 10
   playerOneStartPos: {x: -7, y: 0}
@@ -1004,7 +1003,7 @@ GameObject:
   - component: {fileID: 140177738}
   m_Layer: 0
   m_Name: Player One Ability Manager
-  m_TagString: Untagged
+  m_TagString: PlayerOne
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1021,6 +1020,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a14ac30436e4abfa1bda6412e2f6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerOne: {fileID: 14820852}
+  playerTwo: {fileID: 1418973896}
+  ball: {fileID: 1999179637}
   playerOneAbilityText: {fileID: 245441131}
   playerTwoAbilityText: {fileID: 1910789522}
 --- !u!4 &140177739
@@ -8519,7 +8521,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 1
-  abilityManager: {fileID: 140177738}
   ball: {fileID: 1999179637}
   playerSpeed: 10
   playerOneStartPos: {x: -7, y: 0}
@@ -11227,7 +11228,7 @@ GameObject:
   - component: {fileID: 1902059871}
   m_Layer: 0
   m_Name: 'Player Two Ability Manager '
-  m_TagString: Untagged
+  m_TagString: PlayerTwo
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11244,6 +11245,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a14ac30436e4abfa1bda6412e2f6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerOne: {fileID: 14820852}
+  playerTwo: {fileID: 1418973896}
+  ball: {fileID: 1999179637}
   playerOneAbilityText: {fileID: 245441131}
   playerTwoAbilityText: {fileID: 1910789522}
 --- !u!4 &1902059872

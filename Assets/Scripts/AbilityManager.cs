@@ -4,10 +4,18 @@ using UnityEngine.UI;
 
 public class AbilityManager : MonoBehaviour
 {
-    private Team playerOneTeam;
-    private Team playerTwoTeam;
+    [SerializeField] private float cooldDownBetweenOneShotAbilities = 5f;
+    private bool canActivateNextOneShotPlayerOne = true;
+    private bool canActivateNextOneShotPlayerTwo = true;
+    [SerializeField] private GameObject playerOne, playerTwo, ball;
     private int currentOneShotIndexPlayerOne = 0;
     private int currentOneShotIndexPlayerTwo = 0;
+    private Team playerOneTeam;
+    private Team playerTwoTeam;
+
+    // Cooldown tracking for each team's reusable ability
+    private bool playerOneAbilityOnCooldown;
+    private bool playerTwoAbilityOnCooldown;
 
     [SerializeField] private Text playerOneAbilityText, playerTwoAbilityText;
 
@@ -16,60 +24,108 @@ public class AbilityManager : MonoBehaviour
         playerOneTeam = TeamsManager.Instance.GetPlayerOneTeam();
         playerTwoTeam = TeamsManager.Instance.GetPlayerTwoTeam();
     }
-
-    public void ActivateReusableAbilityPlayerOne(GameObject player, GameObject ball)
+    void Update()
     {
-        if (playerOneTeam.reusableAbility != null && playerOneTeam.reusableAbility.CanActivate())
+        if (GameManager.Instance.CurrentState() != GameState.GamePlay) return;
+        if (tag == "PlayerOne")
         {
-            playerOneTeam.reusableAbility.Execute(player, ball);
-            StartCoroutine(DisplayAbilityText(playerOneAbilityText, playerOneTeam.reusableAbility.abilityName));
-            StartCoroutine(playerOneTeam.reusableAbility.StartCooldown());
+            if (Input.GetKeyDown(KeyCode.LeftShift))
+            {
+                ActivateNextOneShotAbilityPlayerOne(playerOne, ball);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftCommand))
+            {
+                ActivateReusableAbilityPlayerOne(playerOne, ball);
+            }
         }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.RightShift))
+            {
+                ActivateNextOneShotAbilityPlayerTwo(playerTwo, ball);
+            }
+            if (Input.GetKeyDown(KeyCode.RightCommand))
+            {
+                ActivateReusableAbilityPlayerTwo(playerTwo, ball);
+            }
+        }
+
+
     }
 
     public void ActivateNextOneShotAbilityPlayerOne(GameObject player, GameObject ball)
     {
+        if (!canActivateNextOneShotPlayerOne) return;
+
         if (currentOneShotIndexPlayerOne < playerOneTeam.oneShotAbilities.Count)
         {
             BaseAbility ability = playerOneTeam.oneShotAbilities[currentOneShotIndexPlayerOne];
             ability.Execute(player, ball);
             StartCoroutine(DisplayAbilityText(playerOneAbilityText, ability.abilityName));
-            currentOneShotIndexPlayerOne++;
-        }
-    }
 
-    public void ActivateReusableAbilityPlayerTwo(GameObject player, GameObject ball)
-    {
-        if (playerTwoTeam.reusableAbility != null && playerTwoTeam.reusableAbility.CanActivate())
-        {
-            playerTwoTeam.reusableAbility.Execute(player, ball);
-            StartCoroutine(DisplayAbilityText(playerTwoAbilityText, playerTwoTeam.reusableAbility.abilityName));
-            StartCoroutine(playerTwoTeam.reusableAbility.StartCooldown());
+            currentOneShotIndexPlayerOne++;
+            StartCoroutine(StartCooldownForNextOneShotPlayerOne());
         }
     }
 
     public void ActivateNextOneShotAbilityPlayerTwo(GameObject player, GameObject ball)
     {
+        if (!canActivateNextOneShotPlayerTwo) return;
+
         if (currentOneShotIndexPlayerTwo < playerTwoTeam.oneShotAbilities.Count)
         {
             BaseAbility ability = playerTwoTeam.oneShotAbilities[currentOneShotIndexPlayerTwo];
             ability.Execute(player, ball);
             StartCoroutine(DisplayAbilityText(playerTwoAbilityText, ability.abilityName));
+
             currentOneShotIndexPlayerTwo++;
+            StartCoroutine(StartCooldownForNextOneShotPlayerTwo());
         }
     }
 
-    // Coroutine to animate the ability name text
+    public void ActivateReusableAbilityPlayerOne(GameObject player, GameObject ball)
+    {
+        if (playerOneTeam.reusableAbility != null && !playerOneAbilityOnCooldown)
+        {
+            playerOneTeam.reusableAbility.Execute(player, ball);
+            StartCoroutine(DisplayAbilityText(playerOneAbilityText, playerOneTeam.reusableAbility.abilityName));
+            StartCoroutine(StartCooldownPlayerOne());
+        }
+    }
+
+    public void ActivateReusableAbilityPlayerTwo(GameObject player, GameObject ball)
+    {
+        if (playerTwoTeam.reusableAbility != null && !playerTwoAbilityOnCooldown)
+        {
+            playerTwoTeam.reusableAbility.Execute(player, ball);
+            StartCoroutine(DisplayAbilityText(playerTwoAbilityText, playerTwoTeam.reusableAbility.abilityName));
+            StartCoroutine(StartCooldownPlayerTwo());
+        }
+    }
+
+    private IEnumerator StartCooldownPlayerOne()
+    {
+        playerOneAbilityOnCooldown = true;
+        yield return new WaitForSeconds(playerOneTeam.reusableAbility.cooldown + playerOneTeam.reusableAbility.duration);
+        playerOneAbilityOnCooldown = false;
+    }
+
+    private IEnumerator StartCooldownPlayerTwo()
+    {
+        playerTwoAbilityOnCooldown = true;
+        yield return new WaitForSeconds(playerTwoTeam.reusableAbility.cooldown + playerTwoTeam.reusableAbility.duration);
+        playerTwoAbilityOnCooldown = false;
+    }
+
     private IEnumerator DisplayAbilityText(Text abilityText, string abilityName)
     {
-        abilityText.text = abilityName;  // Set the text to the ability name
-        abilityText.transform.localScale = Vector3.one;  // Reset the scale
+        Color beginingColor = abilityText.color;
+        abilityText.text = abilityName;
+        abilityText.transform.localScale = Vector3.one;
 
-        // Animate the text growing
-        float scaleTime = 1f;  // Duration to grow the text
-        float maxScale = 2f;  // Maximum scale
+        float scaleTime = 1f;
+        float maxScale = 2f;
         float elapsedTime = 0f;
-
         while (elapsedTime < scaleTime)
         {
             float scale = Mathf.Lerp(1f, maxScale, elapsedTime / scaleTime);
@@ -78,14 +134,11 @@ public class AbilityManager : MonoBehaviour
             yield return null;
         }
 
-        // Wait for 1 second before starting to fade
         yield return new WaitForSeconds(1f);
 
-        // Fade out the ability text
-        float fadeDuration = 1f;  // Fade duration
+        float fadeDuration = 1f;
         Color startColor = abilityText.color;
-        Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0);  // Fully transparent
-
+        Color endColor = new Color(startColor.r, startColor.g, startColor.b, 0);
         elapsedTime = 0f;
         while (elapsedTime < fadeDuration)
         {
@@ -94,8 +147,20 @@ public class AbilityManager : MonoBehaviour
             yield return null;
         }
 
-        // Hide the text after fading
         abilityText.text = "";
-        abilityText.color = startColor;  // Reset the color for the next ability
+        abilityText.color = beginingColor;
+    }
+    private IEnumerator StartCooldownForNextOneShotPlayerOne()
+    {
+        canActivateNextOneShotPlayerOne = false;
+        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities); // Cooldown duration for Player One
+        canActivateNextOneShotPlayerOne = true;
+    }
+
+    private IEnumerator StartCooldownForNextOneShotPlayerTwo()
+    {
+        canActivateNextOneShotPlayerTwo = false;
+        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities); // Cooldown duration for Player Two
+        canActivateNextOneShotPlayerTwo = true;
     }
 }

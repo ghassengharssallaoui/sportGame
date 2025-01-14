@@ -4,7 +4,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Sting Ability", menuName = "Abilities/Sting")]
 public class StingAbility : BaseAbility
 {
-    public float freezeDuration = 5f;  // Duration for which the opponent will be frozen
 
     public override void Execute(GameObject player, GameObject ball)
     {
@@ -36,7 +35,7 @@ public class StingAbility : BaseAbility
         // e.g., change the color to show that they're frozen
 
         // Wait for the freeze duration
-        yield return new WaitForSeconds(freezeDuration);
+        yield return new WaitForSeconds(duration);
 
         // Re-enable the opponent's movement
         opponentController.canMove = true;

@@ -7,6 +7,7 @@ public abstract class BaseAbility : ScriptableObject
 {
     public string abilityName;
     public float cooldown = 3f;
+    public float duration;
 
     private bool isOnCooldown;
 

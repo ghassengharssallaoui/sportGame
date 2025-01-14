@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerController : MonoBehaviour
 {
     public bool canMove = true;
-    public AbilityManager abilityManager;
+
     public GameObject ball;
     private Vector2 previousPosition;
     [HideInInspector]
@@ -61,29 +61,12 @@ public class PlayerController : MonoBehaviour
         {
             input.x = Input.GetAxisRaw("PlayerOneHorizontal");
             input.y = Input.GetAxisRaw("PlayerOneVertical");
-            if (Input.GetKeyDown(KeyCode.LeftShift))
-            {
-                abilityManager.ActivateNextOneShotAbilityPlayerOne(gameObject, ball);
-            }
 
-            if (Input.GetKeyDown(KeyCode.LeftCommand))
-            {
-                abilityManager.ActivateReusableAbilityPlayerOne(gameObject, ball);
-            }
         }
         else
         {
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
-            if (Input.GetKeyDown(KeyCode.RightShift))
-            {
-                abilityManager.ActivateNextOneShotAbilityPlayerTwo(gameObject, ball);
-            }
-
-            if (Input.GetKeyDown(KeyCode.RightCommand))
-            {
-                abilityManager.ActivateReusableAbilityPlayerTwo(gameObject, ball);
-            }
         }
 
 
@@ -158,21 +141,21 @@ public class PlayerController : MonoBehaviour
         {
             moveVector = moveVector.normalized;
         }
-        if (gameObject.transform.localScale.x > 1.5f)
-        {
-            xBoundary = 9.65f;
-            yBoundary = 4f;
-        }
-        else
-        {
-            xBoundary = 10f;
-            yBoundary = 4.35f;
-        }
+        // Dynamically adjust boundaries based on size
+        float baseSize = 1.3f;
+        float baseXBoundary = 10f;
+        float baseYBoundary = 4.35f;
 
+        float sizeIncrease = gameObject.transform.localScale.x - baseSize;
+        xBoundary = baseXBoundary - sizeIncrease / 2;
+        yBoundary = baseYBoundary - sizeIncrease / 2;
+
+        // Clamp the player's position within the adjusted boundaries
         Vector2 newPosition = new Vector2(
             Mathf.Clamp(rb.position.x + moveVector.x * adjustedSpeed * attackDefenseModifier, -xBoundary, xBoundary),
             Mathf.Clamp(rb.position.y + moveVector.y * adjustedSpeed * attackDefenseModifier, -yBoundary, yBoundary)
         );
+
 
         HandleStaminaAdjustment(previousPosition, newPosition, input.magnitude);
         if (canMove) rb.MovePosition(newPosition);
@@ -238,6 +221,11 @@ public class PlayerController : MonoBehaviour
                 amount /= (TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].durability / 5);
             }
         }
+        ChangeStamina(amount);
+    }
+
+    public void ChangeStamina(float amount)
+    {
         currentStamina += amount;
         currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina); // Ensure health does not exceed maxHealth
 

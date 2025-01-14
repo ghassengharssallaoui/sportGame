@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c5ec537f60754e35ac5a2e2b4096268, type: 3}
-  m_Name: Sting Ability
+  m_Script: {fileID: 11500000, guid: 82c83472a6df14933931ee7a5f92f8f7, type: 3}
+  m_Name: FireballAbility
   m_EditorClassIdentifier: 
-  abilityName: Sting
+  abilityName: FireBall
   cooldown: 3
-  duration: 10
+  fireballPrefab: {fileID: 3096368662111503411, guid: 9023cb6d698cf43ec89a75afcd2261f0, type: 3}
+  fireballSpeed: 10

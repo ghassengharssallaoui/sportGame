@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   abilityName: Growth
   cooldown: 3
-  sizeMultiplier: 1.5
   duration: 10
+  sizeMultiplier: 1.5

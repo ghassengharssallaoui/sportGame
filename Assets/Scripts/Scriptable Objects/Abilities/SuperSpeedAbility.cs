@@ -5,7 +5,6 @@ using UnityEngine;
 public class SuperSpeedAbility : BaseAbility
 {
     public float speedMultiplier = 2f; // How much to increase the speed
-    public float duration = 10f; // Duration of the speed boost in seconds
 
     public override void Execute(GameObject player, GameObject ball)
     {
