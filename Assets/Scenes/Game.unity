@@ -1020,6 +1020,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a14ac30436e4abfa1bda6412e2f6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldDownBetweenOneShotAbilities: 5
   playerOne: {fileID: 14820852}
   playerTwo: {fileID: 1418973896}
   ball: {fileID: 1999179637}
@@ -11245,6 +11246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41a14ac30436e4abfa1bda6412e2f6b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cooldDownBetweenOneShotAbilities: 5
   playerOne: {fileID: 14820852}
   playerTwo: {fileID: 1418973896}
   ball: {fileID: 1999179637}

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d9679bf57de674a2693b4543b7312e5b, type: 3}
-  m_Name: FireBallAbility
+  m_Name: ElectricShock
   m_EditorClassIdentifier: 
-  abilityName: FireBall
+  abilityName: 'Electric Shock '
   cooldown: 3
   duration: 0
-  projectilePrefab: {fileID: 3096368662111503411, guid: 9023cb6d698cf43ec89a75afcd2261f0, type: 3}
+  projectilePrefab: {fileID: 3096368662111503411, guid: 436fa15170c9f423ca6fa04068b603c0, type: 3}
   projectileSpeed: 10

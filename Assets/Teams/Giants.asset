@@ -20,8 +20,5 @@ MonoBehaviour:
   attack: 9
   defense: 1
   durability: 5
-  reusableAbility: {fileID: 11400000, guid: bac8516a4225e43b8b7177edbd5b7685, type: 2}
-  oneShotAbilities:
-  - {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
-  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}
-  - {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
+  reusableAbility: {fileID: 0}
+  oneShotAbilities: []
