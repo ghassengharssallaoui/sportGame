@@ -8,9 +8,16 @@ public class MenuController : MonoBehaviour
     private Image playerOne, playerTwo;
 
     [SerializeField]
-    private Text playerOneNameText, playerOneSpeedText, playerOneStrengthText, playerOneAttackText, playerOneDefenseText, playerOneDurabilityText;
+    private Text playerOneNameText, playerOneSpeedText, playerOneStrengthText, playerOneAttackText, playerOneDefenseText, playerOneDurabilityText,
+                 playerOneReusableAbility;
     [SerializeField]
-    private Text playerTwoNameText, playerTwoSpeedText, playerTwoStrengthText, playerTwoAttackText, playerTwoDefenseText, playerTwoDurabilityText;
+    private Text playerTwoNameText, playerTwoSpeedText, playerTwoStrengthText, playerTwoAttackText, playerTwoDefenseText, playerTwoDurabilityText,
+                 playerTwoReusableAbility;
+
+    [SerializeField]
+    private Text[] playerOneOneShotAbilities = new Text[5];
+    [SerializeField]
+    private Text[] playerTwoOneShotAbilities = new Text[5];
 
     private TeamsManager teamsManager;
 
@@ -60,6 +67,20 @@ public class MenuController : MonoBehaviour
         playerOneAttackText.text = $"Attack: {team.attack}";
         playerOneDefenseText.text = $"Defense: {team.defense}";
         playerOneDurabilityText.text = $"Durability: {team.durability}";
+        playerOneReusableAbility.text = $"Reusable Ability: {team.reusableAbility.abilityName}";
+
+        // Update Player One's one-shot abilities
+        for (int i = 0; i < playerOneOneShotAbilities.Length; i++)
+        {
+            if (team.oneShotAbilities != null && i < team.oneShotAbilities.Count && team.oneShotAbilities[i] != null)
+            {
+                playerOneOneShotAbilities[i].text = $"One-Shot Ability {i + 1}: {team.oneShotAbilities[i].abilityName}";
+            }
+            else
+            {
+                playerOneOneShotAbilities[i].text = $"";
+            }
+        }
     }
 
     private void UpdatePlayerTwoUI()
@@ -72,6 +93,20 @@ public class MenuController : MonoBehaviour
         playerTwoAttackText.text = $"Attack: {team.attack}";
         playerTwoDefenseText.text = $"Defense: {team.defense}";
         playerTwoDurabilityText.text = $"Durability: {team.durability}";
+        playerTwoReusableAbility.text = $"Reusable Ability: {team.reusableAbility.abilityName}";
+
+        // Update Player Two's one-shot abilities
+        for (int i = 0; i < playerTwoOneShotAbilities.Length; i++)
+        {
+            if (team.oneShotAbilities != null && i < team.oneShotAbilities.Count && team.oneShotAbilities[i] != null)
+            {
+                playerTwoOneShotAbilities[i].text = $"One-Shot Ability {i + 1}: {team.oneShotAbilities[i].abilityName}";
+            }
+            else
+            {
+                playerTwoOneShotAbilities[i].text = $"";
+            }
+        }
     }
 
     public void Play()

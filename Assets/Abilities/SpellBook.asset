@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55df23053d5c048d8a7618f1107d10eb, type: 3}
+  m_Name: SpellBook
+  m_EditorClassIdentifier: 
+  abilityName: Random
+  cooldown: 3
+  duration: 10
+  availableAbilities:
+  - {fileID: 11400000, guid: a5152e8c0537f4cf8a11b9f3c83fa005, type: 2}
+  - {fileID: 11400000, guid: 66c4b2ae226b14738aa6c210cb53a6b9, type: 2}
+  - {fileID: 11400000, guid: bac8516a4225e43b8b7177edbd5b7685, type: 2}
+  - {fileID: 11400000, guid: 7e3cf23e855404891aac7eac557e0258, type: 2}
+  - {fileID: 11400000, guid: 98c8773195a5d46abb697be6aed0f1e8, type: 2}
+  - {fileID: 11400000, guid: f8756a72e157d46669813574d24cb032, type: 2}
+  - {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
+  - {fileID: 11400000, guid: 054b91bf211ef48929350e4d451b3aa3, type: 2}
+  - {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}
+  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
+  - {fileID: 11400000, guid: b3512384e05aa4ea5b771f859aeada4e, type: 2}
+  - {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}
+  - {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
+  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}
+  - {fileID: 11400000, guid: 5ebeb8c62a0a84c2ca9c1160c4b13fbc, type: 2}
+  - {fileID: 11400000, guid: a4e8c84277655481c9597b22049a473a, type: 2}
+  - {fileID: 11400000, guid: 0a7eae6fb3d504b15a53b61dc6e02cdb, type: 2}

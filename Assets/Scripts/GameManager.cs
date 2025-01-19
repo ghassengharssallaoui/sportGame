@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     private SpriteRenderer playerOne, playerTwo;
     private TeamsManager teamsManager;
 
-
+    [SerializeField]
+    GameObject playerOneStarSheild, playerTwoStarSheild, playerOneBongSheild, playerTwoBongSheild, playerOneGoalSheild, playerTwoGoalSheild;
     [SerializeField] private SlidersController1 slidersController;
 
     public event Action<int> OnGoalHit;
@@ -267,4 +268,88 @@ public class GameManager : MonoBehaviour
 
         return null; // Default case if no match
     }
+    public void ActivateSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneStarSheild.SetActive(true);
+        }
+        else
+        {
+            playerTwoStarSheild.SetActive(true);
+        }
+    }
+    public void DeactivateSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneStarSheild.SetActive(false);
+        }
+        else
+        {
+            playerTwoStarSheild.SetActive(false);
+        }
+    }
+
+
+
+
+
+    public void ActivateBongSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneBongSheild.SetActive(true);
+        }
+        else
+        {
+            playerTwoBongSheild.SetActive(true);
+        }
+    }
+    public void DeactivateBongSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneBongSheild.SetActive(false);
+        }
+        else
+        {
+            playerTwoBongSheild.SetActive(false);
+        }
+    }
+    public void ActivateGoalSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneGoalSheild.SetActive(true);
+        }
+        else
+        {
+            playerTwoGoalSheild.SetActive(true);
+        }
+    }
+    public void DeactivateGoalSheild(string opponentName)
+    {
+        if (opponentName == "Player One")
+        {
+            playerOneGoalSheild.SetActive(false);
+        }
+        else
+        {
+            playerTwoGoalSheild.SetActive(false);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

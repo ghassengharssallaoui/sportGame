@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c275f87b4e0b447b9095ab4a6f704d9, type: 3}
-  m_Name: SuperSpeedAbility
+  m_Script: {fileID: 11500000, guid: 2910cdf04f87f4673896dbdc6b0fa616, type: 3}
+  m_Name: Shield
   m_EditorClassIdentifier: 
-  abilityName: Super Speed
+  abilityName: Shield
   cooldown: 3
-  speedMultiplier: 2
-  duration: 10
+  duration: 5

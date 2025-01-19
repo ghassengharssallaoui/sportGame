@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
+    private float randomizeInterval = 0.35f; // Time between direction changes
+    private float timeSinceLastRandomMove = 0f;
     public bool canMove = true;
-
+    public bool isHypnotised = false;
     public GameObject ball;
     private Vector2 previousPosition;
     [HideInInspector]
@@ -28,8 +30,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Range(0f, 1f)]
     float staminaRecoveryOnGoldenGoal = 0.15f, staminaRecoveryOnHalfTime = 0.3f;
-    private float xBoundary = 10f;
-    private float yBoundary = 4.35f;
+    public float xBoundary = 10f;
+    public float yBoundary = 4.35f;
     private void OnEnable()
     {
         GameManager.Instance.OnGoalHit += ResetPosition;
@@ -54,7 +56,7 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (!canMove) return;
+        if (!canMove || isHypnotised) return;
         if (GameManager.Instance.CurrentState() != GameState.GamePlay) return;
 
         if (gameObject.tag == "PlayerOne")
@@ -68,9 +70,30 @@ public class PlayerController : MonoBehaviour
             input.x = Input.GetAxisRaw("Horizontal");
             input.y = Input.GetAxisRaw("Vertical");
         }
-
-
     }
+
+    public void RandomizeMovement()
+    {
+        if (!isHypnotised) return;
+        // Update random input only after the interval
+        if (timeSinceLastRandomMove >= randomizeInterval)
+        {
+            input.x = Random.Range(-1f, 1f);
+            input.y = Random.Range(-1f, 1f);
+
+            timeSinceLastRandomMove = 0f; // Reset timer
+        }
+        else
+        {
+            timeSinceLastRandomMove += Time.deltaTime; // Increment timer
+        }
+    }
+
+    public void StopRandomMovement()
+    {
+        isHypnotised = false;
+    }
+
     private void HalfTime()
     {
         AdjustStamina(staminaRecoveryOnHalfTime);
