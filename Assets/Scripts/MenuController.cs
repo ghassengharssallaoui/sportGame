@@ -4,6 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
+
+    public string[] stadiums;
+
+    public Text stadiumText;
+    private int currentStadiumTextIndex = 0;
+
     [SerializeField]
     private Image playerOne, playerTwo;
 
@@ -59,9 +65,16 @@ public class MenuController : MonoBehaviour
 
     private void UpdatePlayerOneUI()
     {
+
+
         var team = teamsManager.Teams[teamsManager.PlayerOneIndex];
         playerOne.sprite = team.badge;
-        playerOneNameText.text = team.name;
+        string[] words = team.name.Split(' '); // Split the string into words
+        string lastWord = words[words.Length - 1]; // Get the last word
+        string remainingWords = string.Join(" ", words, 0, words.Length - 1); // Get the rest of the string
+
+        playerOneNameText.text = $"<size=50>{remainingWords}</size>\n<b><size=100>{lastWord}</size></b>";
+
         playerOneSpeedText.text = $"Speed: {team.speed}";
         playerOneStrengthText.text = $"Strength: {team.strength}";
         playerOneAttackText.text = $"Attack: {team.attack}";
@@ -86,8 +99,14 @@ public class MenuController : MonoBehaviour
     private void UpdatePlayerTwoUI()
     {
         var team = teamsManager.Teams[teamsManager.PlayerTwoIndex];
+
+        string[] words = team.name.Split(' '); // Split the string into words
+        string lastWord = words[words.Length - 1]; // Get the last word
+        string remainingWords = string.Join(" ", words, 0, words.Length - 1); // Get the rest of the string
+
+        playerTwoNameText.text = $"<size=50>{remainingWords}</size>\n<b><size=100>{lastWord}</size></b>";
+
         playerTwo.sprite = team.badge;
-        playerTwoNameText.text = team.name;
         playerTwoSpeedText.text = $"Speed: {team.speed}";
         playerTwoStrengthText.text = $"Strength: {team.strength}";
         playerTwoAttackText.text = $"Attack: {team.attack}";
@@ -111,6 +130,26 @@ public class MenuController : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(stadiums[currentStadiumTextIndex]);
+    }
+
+
+    public void NextStadium()
+    {
+        // Increment the index and wrap around if needed
+        currentStadiumTextIndex = (currentStadiumTextIndex + 1) % stadiums.Length;
+
+        // Update the text to the current stadium
+        stadiumText.text = stadiums[currentStadiumTextIndex];
+    }
+
+    // Method to show the previous stadium
+    public void PreviousStadium()
+    {
+        // Decrement the index and wrap around if needed
+        currentStadiumTextIndex = (currentStadiumTextIndex - 1 + stadiums.Length) % stadiums.Length;
+
+        // Update the text to the current stadium
+        stadiumText.text = stadiums[currentStadiumTextIndex];
     }
 }

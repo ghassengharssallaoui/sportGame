@@ -10,13 +10,14 @@ public class BigBongAbility : BaseAbility
     {
         // Step 1: Find the closest bong of the player who activated the ability
         string playerName = player.name;
+        string opponentName = playerName == "Player One" ? "Player Two" : "Player One";
         GameObject targetBong = null;
         float closestDistance = float.MaxValue;
 
         // Search for bongs based on player's name
         for (int i = 1; i <= 2; i++) // Each player has only 2 bongs
         {
-            string bongName = $"{playerName} Bong {i}";
+            string bongName = $"{opponentName} Bong {i}";
             GameObject bongObject = GameObject.Find(bongName);
             if (bongObject != null)
             {
@@ -39,9 +40,9 @@ public class BigBongAbility : BaseAbility
         }
 
         // Step 3: Temporarily shield the opponent's bongs
-        string opponentName = playerName == "Player One" ? "Player Two" : "Player One";
-        GameManager.Instance.ActivateBongSheild(opponentName);
-        GameManager.Instance.StartCoroutine(RemoveShield(opponentName, duration));
+
+        GameManager.Instance.ActivateBongSheild(playerName);
+        GameManager.Instance.StartCoroutine(RemoveShield(playerName, duration));
     }
 
     private IEnumerator RemoveShield(string playerOfTheSheild, float duration)

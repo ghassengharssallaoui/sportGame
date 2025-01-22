@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55df23053d5c048d8a7618f1107d10eb, type: 3}
   m_Name: SpellBook
   m_EditorClassIdentifier: 
-  abilityName: Random
+  abilityName: Spell Book
   cooldown: 3
   duration: 10
   availableAbilities:

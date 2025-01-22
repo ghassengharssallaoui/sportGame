@@ -4,7 +4,10 @@ using UnityEngine.UI;
 
 public class AbilityManager : MonoBehaviour
 {
-    [SerializeField] private float cooldDownBetweenOneShotAbilities = 5f;
+    int i = 0;
+    int j = 0;
+    [SerializeField]
+    private GameObject powerOnePlayerOne, powerTwoPlayerOne, powerThreePlayerOne, powerOnePlayerTwo, powerTwoPlayerTwo, powerThreePlayerTwo; [SerializeField] private float cooldDownBetweenOneShotAbilities = 5f;
     private bool canActivateNextOneShotPlayerOne = true;
     private bool canActivateNextOneShotPlayerTwo = true;
     [SerializeField] private GameObject playerOne, playerTwo, ball;
@@ -17,6 +20,11 @@ public class AbilityManager : MonoBehaviour
     private bool playerOneAbilityOnCooldown;
     private bool playerTwoAbilityOnCooldown;
 
+    // Limit for reusable ability uses
+    private int playerOneReusableAbilityUses = 0;
+    private int playerTwoReusableAbilityUses = 0;
+    private const int maxReusableAbilityUses = 3;
+
     [SerializeField] private Text playerOneAbilityText, playerTwoAbilityText;
 
     private void Start()
@@ -24,9 +32,11 @@ public class AbilityManager : MonoBehaviour
         playerOneTeam = TeamsManager.Instance.GetPlayerOneTeam();
         playerTwoTeam = TeamsManager.Instance.GetPlayerTwoTeam();
     }
+
     void Update()
     {
         if (GameManager.Instance.CurrentState() != GameState.GamePlay) return;
+
         if (tag == "PlayerOne")
         {
             if (Input.GetKeyDown(KeyCode.LeftShift))
@@ -36,6 +46,7 @@ public class AbilityManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.LeftCommand))
             {
                 ActivateReusableAbilityPlayerOne(playerOne, ball);
+
             }
         }
         else
@@ -47,10 +58,9 @@ public class AbilityManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.RightCommand))
             {
                 ActivateReusableAbilityPlayerTwo(playerTwo, ball);
+
             }
         }
-
-
     }
 
     public void ActivateNextOneShotAbilityPlayerOne(GameObject player, GameObject ball)
@@ -85,9 +95,22 @@ public class AbilityManager : MonoBehaviour
 
     public void ActivateReusableAbilityPlayerOne(GameObject player, GameObject ball)
     {
-        if (playerOneTeam.reusableAbility != null && !playerOneAbilityOnCooldown)
+        if (playerOneTeam.reusableAbility != null && !playerOneAbilityOnCooldown && playerOneReusableAbilityUses < maxReusableAbilityUses)
         {
+            if (powerOnePlayerOne.activeSelf)
+            {
+                powerOnePlayerOne.SetActive(false);
+            }
+            else if (powerTwoPlayerOne.activeSelf)
+            {
+                powerTwoPlayerOne.SetActive(false);
+            }
+            else if (powerThreePlayerOne.activeSelf)
+            {
+                powerThreePlayerOne.SetActive(false);
+            }
             playerOneTeam.reusableAbility.Execute(player, ball);
+            playerOneReusableAbilityUses++;
             StartCoroutine(DisplayAbilityText(playerOneAbilityText, playerOneTeam.reusableAbility.abilityName));
             StartCoroutine(StartCooldownPlayerOne());
         }
@@ -95,9 +118,22 @@ public class AbilityManager : MonoBehaviour
 
     public void ActivateReusableAbilityPlayerTwo(GameObject player, GameObject ball)
     {
-        if (playerTwoTeam.reusableAbility != null && !playerTwoAbilityOnCooldown)
+        if (playerTwoTeam.reusableAbility != null && !playerTwoAbilityOnCooldown && playerTwoReusableAbilityUses < maxReusableAbilityUses)
         {
+            if (powerOnePlayerTwo.activeSelf)
+            {
+                powerOnePlayerTwo.SetActive(false);
+            }
+            else if (powerTwoPlayerTwo.activeSelf)
+            {
+                powerTwoPlayerTwo.SetActive(false);
+            }
+            else if (powerThreePlayerTwo.activeSelf)
+            {
+                powerThreePlayerTwo.SetActive(false);
+            }
             playerTwoTeam.reusableAbility.Execute(player, ball);
+            playerTwoReusableAbilityUses++;
             StartCoroutine(DisplayAbilityText(playerTwoAbilityText, playerTwoTeam.reusableAbility.abilityName));
             StartCoroutine(StartCooldownPlayerTwo());
         }
@@ -150,17 +186,20 @@ public class AbilityManager : MonoBehaviour
         abilityText.text = "";
         abilityText.color = beginingColor;
     }
+
     private IEnumerator StartCooldownForNextOneShotPlayerOne()
     {
         canActivateNextOneShotPlayerOne = false;
-        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities); // Cooldown duration for Player One
+        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities + playerOneTeam.oneShotAbilities[i].duration); // Cooldown duration for Player One
         canActivateNextOneShotPlayerOne = true;
+        i++;
     }
 
     private IEnumerator StartCooldownForNextOneShotPlayerTwo()
     {
         canActivateNextOneShotPlayerTwo = false;
-        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities); // Cooldown duration for Player Two
+        yield return new WaitForSeconds(cooldDownBetweenOneShotAbilities + playerTwoTeam.oneShotAbilities[j].duration); // Cooldown duration for Player Two
         canActivateNextOneShotPlayerTwo = true;
+        j++;
     }
 }

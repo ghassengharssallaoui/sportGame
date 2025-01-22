@@ -3,11 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    private Dictionary<string, Sprite> abilitySprites;
+    public Sprite BigBong;
+    public Sprite ElectricShock;
+    public Sprite FireBall;
+    public Sprite Flight;
+    public Sprite Force;
+    public Sprite GoalAttack;
+    public Sprite Growth;
+    public Sprite Healing;
+    public Sprite Hypnotise;
+    public Sprite Icebolt;
+    public Sprite Jump;
+    public Sprite Ranger;
+    public Sprite Shield;
+    public Sprite SpellBook;
+    public Sprite Sting;
+    public Sprite SuperSpeed;
+    public Sprite SuperStar;
+    public Sprite Swoop;
+    public Sprite Whirlpool;
+
+    public Image powerOne, powerOnePlayerTwo;
+    public Image powerTwo, powerTwoPlayerTwo;
+    public Image powerThree, powerThreePlayerTwo;
+
+    [SerializeField]
+    private Sprite[] abilitiesSprites;
     [SerializeField]
     private SpriteRenderer playerOne, playerTwo;
+    [SerializeField] Image playerOneUiBage, playerTwoUiBage;
     private TeamsManager teamsManager;
 
     [SerializeField]
@@ -64,6 +93,36 @@ public class GameManager : MonoBehaviour
         TransitionToState(GameState.WaitingForStart);
         playerOne.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].skin;
         playerTwo.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].skin;
+        playerOneUiBage.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].badge;
+        playerTwoUiBage.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].badge;
+        // playOnePowerOneUi = teamsManager.Teams[teamsManager.PlayerTwoIndex].badge;
+        abilitySprites = new Dictionary<string, Sprite>
+        {
+            { "Big Bong", BigBong },
+            { "Electric Shock", ElectricShock },
+            { "Fire Ball", FireBall },
+            { "Flight", Flight },
+            { "Force", Force },
+            { "Goal Attack", GoalAttack },
+            { "Growth", Growth },
+            { "Healing", Healing },
+            { "Hypnotise", Hypnotise },
+            { "Icebolt", Icebolt },
+            { "Jump", Jump },
+            { "Ranger", Ranger },
+            { "Shield", Shield },
+            { "Spell Book", SpellBook },
+            { "Sting", Sting },
+            { "Super Speed", SuperSpeed },
+            { "Super Star", SuperStar },
+            { "Swoop", Swoop },
+            { "Whirlpool", Whirlpool }
+        };
+
+        AssignPlayerOnePowerSprites();
+        AssignPlayerTwoPowerSprites();
+
+
     }
     private void Update()
     {
@@ -256,7 +315,7 @@ public class GameManager : MonoBehaviour
     }
     private void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene("MainMenu");
     }
     public GameObject GetKeeperForPlayer(GameObject player)
     {
@@ -344,11 +403,39 @@ public class GameManager : MonoBehaviour
 
 
 
+    private void AssignPlayerOnePowerSprites()
+    {
+        string abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].reusableAbility.abilityName;
+        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
+        {
+            powerOne.sprite = assignedSprite;
+            powerTwo.sprite = assignedSprite;
+            powerThree.sprite = assignedSprite;
+        }
+        else
+        {
+            Debug.LogError("Ability name not recognized: " + abilityName);
+        }
+    }
 
 
 
-
-
+    private void AssignPlayerTwoPowerSprites()
+    {
+        string abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].reusableAbility.abilityName;
+        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
+        {
+            powerOnePlayerTwo.sprite = assignedSprite;
+            powerTwoPlayerTwo.sprite = assignedSprite;
+            powerThreePlayerTwo.sprite = assignedSprite;
+        }
+        else
+        {
+            Debug.LogError("Ability name not recognized: " + abilityName);
+        }
+    }
 
 
 

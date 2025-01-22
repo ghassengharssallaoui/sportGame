@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class UiManager : MonoBehaviour
 {
+    [SerializeField] private Text statusText;
     [SerializeField] private float animationDuration;
     [SerializeField] private int animationStartFontSize = 24; // Initial font size
     [SerializeField] private int animationEndFontSize = 44;
@@ -77,8 +78,8 @@ public class UiManager : MonoBehaviour
     private void UpdateGoalUI(int playerScored)
     {
         // Update the score UI for both players
-        playerOneGoalsText.text = "Goal: " + ScoreManager.Instance.GetPlayerOneGoalHits();
-        playerTwoGoalsText.text = "Goal: " + ScoreManager.Instance.GetPlayerTwoGoalHits();
+        playerOneGoalsText.text = "" + ScoreManager.Instance.GetPlayerOneGoalHits();
+        playerTwoGoalsText.text = "" + ScoreManager.Instance.GetPlayerTwoGoalHits();
 
         // Trigger animation for goals (6 points for goal)
         UpdateScoreAndAnimation(playerScored, 6, playerScored == 1 ? playerOneAnimationText : playerTwoAnimationText);
@@ -87,8 +88,8 @@ public class UiManager : MonoBehaviour
     // Update overs UI and animation (3 points for overs)
     private void UpdateOversUI(int playerScored)
     {
-        playerOneOversText.text = "Overs: " + ScoreManager.Instance.GetPlayerOneOverHits();
-        playerTwoOversText.text = "Overs: " + ScoreManager.Instance.GetPlayerTwoOverHits();
+        playerOneOversText.text = "" + ScoreManager.Instance.GetPlayerOneOverHits();
+        playerTwoOversText.text = "" + ScoreManager.Instance.GetPlayerTwoOverHits();
 
         // Trigger animation for overs (3 points for overs)
         UpdateScoreAndAnimation(playerScored, 3, playerScored == 1 ? playerOneAnimationText : playerTwoAnimationText);
@@ -98,8 +99,8 @@ public class UiManager : MonoBehaviour
     // Update bongs UI and animation (1 point for bongs)
     private void UpdateBongsUI(int playerScored, BongsController bong)
     {
-        playerOneBongsText.text = "Bongs: " + ScoreManager.Instance.GetPlayerOneBongHits();
-        playerTwoBongsText.text = "Bongs: " + ScoreManager.Instance.GetPlayerTwoBongHits();
+        playerOneBongsText.text = "" + ScoreManager.Instance.GetPlayerOneBongHits();
+        playerTwoBongsText.text = "" + ScoreManager.Instance.GetPlayerTwoBongHits();
 
         // Trigger animation for bongs (1 point for bongs)
         UpdateScoreAndAnimation(playerScored, 1, playerScored == 1 ? playerOneAnimationText : playerTwoAnimationText);
@@ -109,33 +110,33 @@ public class UiManager : MonoBehaviour
     // Update stars UI and animation (2 points for stars)
     private void UpdateStarsUI(int playerScored, int index)
     {
-        playerOneStarsText.text = "Stars: " + ScoreManager.Instance.GetPlayerOneStarHits();
-        playerTwoStarsText.text = "Stars: " + ScoreManager.Instance.GetPlayerTwoStarHits();
-        playerOneTotalStars.text = "Stars Hit: " + ScoreManager.Instance.GetPlayerOneTotalStarHits();
-        playerTwoTotalStars.text = "Stars Hit: " + ScoreManager.Instance.GetPlayerTwoTotalStarHits();
+        playerOneStarsText.text = "" + ScoreManager.Instance.GetPlayerOneStarHits();
+        playerTwoStarsText.text = "" + ScoreManager.Instance.GetPlayerTwoStarHits();
+        playerOneTotalStars.text = "StarHits ☆ \t\t " + ScoreManager.Instance.GetPlayerOneTotalStarHits();
+        playerTwoTotalStars.text = "StarHits ☆ \t\t " + ScoreManager.Instance.GetPlayerTwoTotalStarHits();
 
         UpdateScoreAndAnimation(playerScored, 2, playerScored == 1 ? playerOneAnimationText : playerTwoAnimationText);
     }
     private void UpdateKeeperStatistics(int playerScored)
     {
 
-        playerOneTotalPossission.text = "Possession: " + ScoreManager.Instance.GetPlayerOnePossession();
-        playerTwoTotalPossission.text = "Possession: " + ScoreManager.Instance.GetPlayerTwoPossession();
-        playerOneTotalSaves.text = "Saves : " + ScoreManager.Instance.GetPlayerOneSaves();
-        playerTwoTotalSaves.text = "Saves : " + ScoreManager.Instance.GetPlayerTwoSaves();
+        playerOneTotalPossission.text = "" + ScoreManager.Instance.GetPlayerOnePossession();
+        playerTwoTotalPossission.text = "" + ScoreManager.Instance.GetPlayerTwoPossession();
+        playerOneTotalSaves.text = "" + ScoreManager.Instance.GetPlayerOneSaves();
+        playerTwoTotalSaves.text = "" + ScoreManager.Instance.GetPlayerTwoSaves();
     }
     private void UpdatePlayerStatistics(int playerScored)
     {
 
-        playerOneTotalPossission.text = "Possession: " + ScoreManager.Instance.GetPlayerOnePossession();
-        playerTwoTotalPossission.text = "Possession: " + ScoreManager.Instance.GetPlayerTwoPossession();
+        playerOneTotalPossission.text = "" + ScoreManager.Instance.GetPlayerOnePossession();
+        playerTwoTotalPossission.text = "" + ScoreManager.Instance.GetPlayerTwoPossession();
     }
 
 
     private void UpdateScoreAndAnimation(int playerScored, int points, Text playerAnimationText)
     {
-        playerOneScoreText.text = "Score Player 1 : " + ScoreManager.Instance.GetPlayerOneScore();
-        playerTwoScoreText.text = "Score Player 2 : " + ScoreManager.Instance.GetPlayerTwoScore();
+        playerOneScoreText.text = "" + ScoreManager.Instance.GetPlayerOneScore();
+        playerTwoScoreText.text = "" + ScoreManager.Instance.GetPlayerTwoScore();
 
         // Update the player's specific score UI
         playerAnimationText.text = points.ToString();
@@ -182,13 +183,24 @@ public class UiManager : MonoBehaviour
             int minutes = Mathf.FloorToInt(remainingTime / 60);
             int seconds = Mathf.FloorToInt(remainingTime % 60);
             timerText.text = $"{minutes:D2}:{seconds:D2}";
+
+            // Update the additional public text based on gameTime
+            if (gameTime < GameManager.Instance.GameDuration() / 2)
+            {
+                statusText.text = "P1"; // Replace 'statusText' with your public Text variable
+            }
+            else
+            {
+                statusText.text = "P2";
+            }
         }
         else
         {
             timerText.text = "";
+            statusText.text = "GP"; // Replace 'statusText' with your public Text variable
         }
-
     }
+
     private void UpdateHalfTimeUis()
     {
         gameResultText.text = "Half Time\n PRESS SPACE";

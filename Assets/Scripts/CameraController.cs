@@ -41,6 +41,6 @@ public class CameraController : MonoBehaviour
     private void StopCameraMovement()
     {
         elapsed = 100f;
-        transform.localPosition = new Vector3(0, 0, -10);
+        transform.localPosition = new Vector3(0, -1, -10);
     }
 }

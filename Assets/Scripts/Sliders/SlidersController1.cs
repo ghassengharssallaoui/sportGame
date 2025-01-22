@@ -6,7 +6,7 @@ public class SlidersController1 : MonoBehaviour
     [SerializeField] private PlayerController playerOneController;
     [SerializeField] private PlayerController playerTwoController;
 
-
+    private bool isGamePaused = false;
     public void SaveSettings()
     {
         PlayerPrefs.SetFloat("DefaultBallSpeed", ballController.defaultBallSpeed);
@@ -39,12 +39,23 @@ public class SlidersController1 : MonoBehaviour
 
     public void OpenSettings()
     {
-        GameManager.Instance.TransitionToState(GameState.Pause);
+        if (GameManager.Instance.CurrentState() != GameState.GamePlay)
+        {
+            isGamePaused = true;
+        }
+        else
+        {
+            isGamePaused = false;
+            GameManager.Instance.TransitionToState(GameState.Pause);
+        }
         gameObject.SetActive(true);
     }
     public void CloseSettings()
     {
-        GameManager.Instance.TransitionToState(GameState.GamePlay);
+        if (!isGamePaused)
+        {
+            GameManager.Instance.TransitionToState(GameState.GamePlay);
+        }
         gameObject.SetActive(false);
     }
 }

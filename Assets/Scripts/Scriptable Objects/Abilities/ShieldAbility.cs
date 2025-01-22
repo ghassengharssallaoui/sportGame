@@ -12,9 +12,9 @@ public class ShieldAbility : BaseAbility
 
 
         // Step 3: Temporarily shield the opponent's bongs
-        string opponentName = playerName == "Player One" ? "Player Two" : "Player One";
-        GameManager.Instance.ActivateGoalSheild(opponentName);
-        GameManager.Instance.StartCoroutine(RemoveShield(opponentName, duration));
+        //  string opponentName = playerName == "Player One" ? "Player Two" : "Player One";
+        GameManager.Instance.ActivateGoalSheild(playerName);
+        GameManager.Instance.StartCoroutine(RemoveShield(playerName, duration));
     }
 
     private IEnumerator RemoveShield(string playerOfTheSheild, float duration)
