@@ -5,10 +5,13 @@ using UnityEngine;
 public class SatdiumSelector : MonoBehaviour
 {
     public Sprite[] stadiums;
+    public Sprite[] balls;
+    public SpriteRenderer ballSprite;
     // Start is called before the first frame update
     void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = stadiums[MenuController.currentStadiumTextIndex - 1];
+        GetComponent<SpriteRenderer>().sprite = stadiums[MenuController.currentStadiumTextIndex];
+        ballSprite.sprite = balls[MenuController.currentBallTextIndex];
     }
 
 

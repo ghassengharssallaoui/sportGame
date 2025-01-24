@@ -112,8 +112,8 @@ public class UiManager : MonoBehaviour
     {
         playerOneStarsText.text = "" + ScoreManager.Instance.GetPlayerOneStarHits();
         playerTwoStarsText.text = "" + ScoreManager.Instance.GetPlayerTwoStarHits();
-        playerOneTotalStars.text = "StarHits ☆ \t\t " + ScoreManager.Instance.GetPlayerOneTotalStarHits();
-        playerTwoTotalStars.text = "StarHits ☆ \t\t " + ScoreManager.Instance.GetPlayerTwoTotalStarHits();
+        playerOneTotalStars.text = "StarHits ☆ \t\t      " + ScoreManager.Instance.GetPlayerOneTotalStarHits();
+        playerTwoTotalStars.text = "StarHits ☆ \t\t      " + ScoreManager.Instance.GetPlayerTwoTotalStarHits();
 
         UpdateScoreAndAnimation(playerScored, 2, playerScored == 1 ? playerOneAnimationText : playerTwoAnimationText);
     }
@@ -179,11 +179,11 @@ public class UiManager : MonoBehaviour
     {
         if (showTime)
         {
-            float remainingTime = Mathf.Clamp(GameManager.Instance.GameDuration() - gameTime, 0, GameManager.Instance.GameDuration()); // Ensure it doesn't go below 0
-            int minutes = Mathf.FloorToInt(remainingTime / 60);
-            int seconds = Mathf.FloorToInt(remainingTime % 60);
-            timerText.text = $"{minutes:D2}:{seconds:D2}";
-
+            float remainingTime = Mathf.Clamp(GameManager.Instance.GameDuration() - gameTime, 0, GameManager.Instance.GameDuration());
+            // Ensure it doesn't go below 0
+            // int minutes = Mathf.FloorToInt(remainingTime / 60);
+            // int seconds = Mathf.FloorToInt(remainingTime % 60);
+            timerText.text = "" + Mathf.FloorToInt(remainingTime);
             // Update the additional public text based on gameTime
             if (gameTime < GameManager.Instance.GameDuration() / 2)
             {
