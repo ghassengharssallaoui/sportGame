@@ -1479,8 +1479,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stadiums:
-  - Air Stadium
   - Neon
+  - Air Stadium
+  - Archery Stadium
+  - Cloud Stadium
+  - Crystal Stadium
   stadiumText: {fileID: 1094888619}
   playerOne: {fileID: 188111914}
   playerTwo: {fileID: 1371205782}
@@ -2613,7 +2616,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 100
+    m_FontSize: 85
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 1
@@ -2624,7 +2627,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Air Stadium
+  m_Text: Neon
 --- !u!222 &1094888620
 CanvasRenderer:
   m_ObjectHideFlags: 0

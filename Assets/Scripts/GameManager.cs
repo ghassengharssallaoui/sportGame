@@ -406,7 +406,7 @@ public class GameManager : MonoBehaviour
     private void AssignPlayerOnePowerSprites()
     {
         string abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].reusableAbility.abilityName;
-        Debug.Log("" + abilityName);
+        //        Debug.Log("" + abilityName);
         if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
         {
             powerOne.sprite = assignedSprite;
@@ -424,7 +424,7 @@ public class GameManager : MonoBehaviour
     private void AssignPlayerTwoPowerSprites()
     {
         string abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].reusableAbility.abilityName;
-        Debug.Log("" + abilityName);
+        //        Debug.Log("" + abilityName);
         if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
         {
             powerOnePlayerTwo.sprite = assignedSprite;

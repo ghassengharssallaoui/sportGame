@@ -8,7 +8,7 @@ public class MenuController : MonoBehaviour
     public string[] stadiums;
 
     public Text stadiumText;
-    private int currentStadiumTextIndex = 0;
+    public static int currentStadiumTextIndex = 0;
 
     [SerializeField]
     private Image playerOne, playerTwo;
@@ -130,9 +130,16 @@ public class MenuController : MonoBehaviour
 
     public void Play()
     {
-        SceneManager.LoadScene(stadiums[currentStadiumTextIndex]);
+        // Check if the current stadium is "Neon"
+        if (stadiums[currentStadiumTextIndex] == "Neon")
+        {
+            SceneManager.LoadScene("Neon");
+        }
+        else
+        {
+            SceneManager.LoadScene("Stadium");
+        }
     }
-
 
     public void NextStadium()
     {
