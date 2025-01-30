@@ -34,7 +34,7 @@ public class BallController : MonoBehaviour
         GameManager.Instance.OnHalfTimeEnded += MoveBallInRandomDirection;
 
         GameManager.Instance.OnGoldenGoalStart += ResetBallToCenter;
-        GameManager.Instance.OnGoldenGoalStart += MoveBallInRandomDirection;
+        GameManager.Instance.OnGoldenGoalStart += MoveBallInRandomDirectionHorizontally;
     }
 
     private void OnDisable()

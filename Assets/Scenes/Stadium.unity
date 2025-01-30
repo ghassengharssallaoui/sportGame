@@ -7899,13 +7899,13 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745445670}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 875261833}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 774.2, y: -420.65}
@@ -11010,7 +11010,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: bfb121c999c894070b30dcb00b7ffe10, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 97d614ce0dc164aa7a0d649bc3562e8d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11049,11 +11049,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stadiums:
-  - {fileID: 21300000, guid: bfb121c999c894070b30dcb00b7ffe10, type: 3}
   - {fileID: 21300000, guid: 0cc5aac77495b4badb15a7f1349758e0, type: 3}
   - {fileID: 21300000, guid: 97074be16af164021b5c52e53ce68b07, type: 3}
   - {fileID: 21300000, guid: c62886fb447cb4fcfb6315e84e922636, type: 3}
   - {fileID: 21300000, guid: 06106e5fea72340609b4860bf0163406, type: 3}
+  - {fileID: 21300000, guid: 4b8339b5d407842fba47df36fb5362be, type: 3}
+  - {fileID: 21300000, guid: 97d614ce0dc164aa7a0d649bc3562e8d, type: 3}
+  - {fileID: 21300000, guid: 9d7d060c525734395a6ab772cb45ef26, type: 3}
+  - {fileID: 21300000, guid: a4b327a71e14f4743a6fc5cb5a02ceae, type: 3}
+  - {fileID: 21300000, guid: 0b1afe065b27f40ffbf38ae8f2746790, type: 3}
+  - {fileID: 21300000, guid: 8d78e68e5ab87402abf46b0c59d638dd, type: 3}
+  - {fileID: 21300000, guid: 5a439912fbce0439aafa76d1c5b041ff, type: 3}
+  - {fileID: 21300000, guid: a5b2eb949ef7142ba8064adb46af8dd6, type: 3}
+  - {fileID: 21300000, guid: 40ddac714f98a41dbbff8645695b7aee, type: 3}
+  - {fileID: 21300000, guid: 92ab5e9aad3754b41bf69bde1f61f1ba, type: 3}
+  - {fileID: 21300000, guid: bfb121c999c894070b30dcb00b7ffe10, type: 3}
   balls:
   - {fileID: 21300000, guid: 0faa8d5d3238546d380f8a97c6ce82cd, type: 3}
   - {fileID: 21300000, guid: 31313c2a350644ed28f38c38ac1b7591, type: 3}
@@ -11840,7 +11850,7 @@ MonoBehaviour:
   playerOneGoalSheild: {fileID: 520505733}
   playerTwoGoalSheild: {fileID: 1493636580}
   slidersController: {fileID: 307068034}
-  gameDuration: 180
+  gameDuration: 4
   playerOneStars:
   - {fileID: 86572867}
   - {fileID: 2037313705}
