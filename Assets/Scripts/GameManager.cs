@@ -426,7 +426,7 @@ public class GameManager : MonoBehaviour
     private void AssignPlayerOnePowerSpritesShot()
     {
         string abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].oneShotAbilities[0].abilityName;
-        //        Debug.Log("" + abilityName);
+        Debug.Log("" + abilityName);
         if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
         {
             powerOneshot.sprite = assignedSprite;

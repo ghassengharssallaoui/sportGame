@@ -7405,8 +7405,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 50437047, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: e2f98668c9f394bc1bec2ee42b45a3eb, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -11822,7 +11822,7 @@ MonoBehaviour:
   Shield: {fileID: 378510656, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
   SpellBook: {fileID: 1504508289, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
   Sting: {fileID: 113170013, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
-  SuperSpeed: {fileID: 229670494, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
+  SuperSpeed: {fileID: 21300000, guid: e2f98668c9f394bc1bec2ee42b45a3eb, type: 3}
   SuperStar: {fileID: -652021000, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
   Swoop: {fileID: 229670494, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
   Whirlpool: {fileID: 1073415495, guid: 84f97dca540064e21b2c831ce7781035, type: 3}
@@ -11850,7 +11850,7 @@ MonoBehaviour:
   playerOneGoalSheild: {fileID: 520505733}
   playerTwoGoalSheild: {fileID: 1493636580}
   slidersController: {fileID: 307068034}
-  gameDuration: 4
+  gameDuration: 180
   playerOneStars:
   - {fileID: 86572867}
   - {fileID: 2037313705}

@@ -5,26 +5,36 @@ using UnityEngine.SceneManagement;
 public class MenuController : MonoBehaviour
 {
     public static MenuController Instance;
+    public int northStart = 0;
+    public int southStart = 21;
+    public int westStart = 44;
+    public int eastStart = 63;
+    // public int eastStart = 63;
 
     public bool isNeon = false;
     public string[] stadiums;
     public string[] balls;
     public string[] skins;
-    public string[] skinsTwo;
+    // public string[] skinsTwo;
     public string[] Regins;
 
     public Text stadiumText;
     public Text ballText;
     public Text skinText;
+    public Text skinTextGoal;
+    public Text skinTextPlayerTwoGoal;
     public Text reginText;
     public Text reginTextPlayerTwo;
     public Text skinTwoText;
     public int currentStadiumTextIndex = 0;
     public int currentBallTextIndex = 0;
     public int currentSkinTextIndex = 0;
+    public int currentSkinTextIndexGoal = 0;
+    public int currentSkinTextIndexGoalPlayerTwo = 0;
     public int currentReginTextIndex = 0;
     public int currentReginTextIndexPlayerTwo = 0;
     public int currentSkinTwoTextIndex = 0;
+    public int currentSkinTwoTextIndexPlayerTwo = 0;
 
     [SerializeField]
     private Image playerOne, playerTwo;
@@ -96,27 +106,22 @@ public class MenuController : MonoBehaviour
 
     private void UpdatePlayerOneUI()
     {
-        if (TeamsManager.Instance.PlayerOneIndex >= 0 && TeamsManager.Instance.PlayerOneIndex <= 20)
+        if (TeamsManager.Instance.PlayerOneIndex >= northStart && TeamsManager.Instance.PlayerOneIndex <= southStart - 1)
         {
             currentReginTextIndex = 0;
         }
-        else if (TeamsManager.Instance.PlayerOneIndex >= 21 && TeamsManager.Instance.PlayerOneIndex <= 43)
+        else if (TeamsManager.Instance.PlayerOneIndex >= southStart && TeamsManager.Instance.PlayerOneIndex <= westStart - 1)
         {
             currentReginTextIndex = 1;
         }
-        else if (TeamsManager.Instance.PlayerOneIndex >= 44 && TeamsManager.Instance.PlayerOneIndex <= 62)
+        else if (TeamsManager.Instance.PlayerOneIndex >= westStart && TeamsManager.Instance.PlayerOneIndex <= eastStart - 1)
         {
             currentReginTextIndex = 2;
         }
-        else if (TeamsManager.Instance.PlayerOneIndex >= 63 && TeamsManager.Instance.PlayerOneIndex <= 83)
+        else if (TeamsManager.Instance.PlayerOneIndex >= eastStart && TeamsManager.Instance.PlayerOneIndex < teamsManager.Teams.Length)
         {
             currentReginTextIndex = 3;
         }
-
-
-
-
-
 
 
 
@@ -159,29 +164,22 @@ public class MenuController : MonoBehaviour
     private void UpdatePlayerTwoUI()
     {
 
-
-
-
-
-
-
-        if (TeamsManager.Instance.PlayerTwoIndex >= 0 && TeamsManager.Instance.PlayerTwoIndex <= 20)
+        if (TeamsManager.Instance.PlayerTwoIndex >= northStart && TeamsManager.Instance.PlayerTwoIndex <= southStart - 1)
         {
             currentReginTextIndexPlayerTwo = 0;
         }
-        else if (TeamsManager.Instance.PlayerTwoIndex >= 21 && TeamsManager.Instance.PlayerTwoIndex <= 43)
+        else if (TeamsManager.Instance.PlayerTwoIndex >= southStart && TeamsManager.Instance.PlayerTwoIndex <= westStart - 1)
         {
             currentReginTextIndexPlayerTwo = 1;
         }
-        else if (TeamsManager.Instance.PlayerTwoIndex >= 44 && TeamsManager.Instance.PlayerTwoIndex <= 62)
+        else if (TeamsManager.Instance.PlayerTwoIndex >= westStart && TeamsManager.Instance.PlayerTwoIndex <= eastStart - 1)
         {
             currentReginTextIndexPlayerTwo = 2;
         }
-        else if (TeamsManager.Instance.PlayerTwoIndex >= 63 && TeamsManager.Instance.PlayerTwoIndex <= 83)
+        else if (TeamsManager.Instance.PlayerTwoIndex >= eastStart && TeamsManager.Instance.PlayerOneIndex < teamsManager.Teams.Length)
         {
             currentReginTextIndexPlayerTwo = 3;
         }
-
 
 
         reginTextPlayerTwo.text = Regins[currentReginTextIndexPlayerTwo];
@@ -217,19 +215,108 @@ public class MenuController : MonoBehaviour
                 playerTwoOneShotAbilities[i].text = $"";
             }
         }
-
-
-
-
-
-
-
-
-
-
-
+    }
+    public void NextRegin()
+    {
+        currentReginTextIndex = (currentReginTextIndex + 1) % Regins.Length;
+        reginText.text = Regins[currentReginTextIndex];
+        switch (currentReginTextIndex)
+        {
+            case 0:
+                TeamsManager.Instance.PlayerOneIndex = northStart;
+                break;
+            case 1:
+                TeamsManager.Instance.PlayerOneIndex = southStart;
+                break;
+            case 2:
+                TeamsManager.Instance.PlayerOneIndex = westStart;
+                break;
+            case 3:
+                TeamsManager.Instance.PlayerOneIndex = eastStart;
+                break;
+        }
+        UpdatePlayerOneUI();
 
     }
+    public void PreviousRegin()
+    {
+        currentReginTextIndex = (currentReginTextIndex - 1 + Regins.Length) % Regins.Length;
+        reginText.text = Regins[currentReginTextIndex];
+        switch (currentReginTextIndex)
+        {
+            case 0:
+                TeamsManager.Instance.PlayerOneIndex = northStart;
+                break;
+            case 1:
+                TeamsManager.Instance.PlayerOneIndex = southStart;
+                break;
+            case 2:
+                TeamsManager.Instance.PlayerOneIndex = westStart;
+                break;
+            case 3:
+                TeamsManager.Instance.PlayerOneIndex = eastStart;
+                break;
+        }
+        UpdatePlayerOneUI();
+    }
+    public void NextReginPlayerTwo()
+    {
+        currentReginTextIndexPlayerTwo = (currentReginTextIndexPlayerTwo + 1) % Regins.Length;
+        reginTextPlayerTwo.text = Regins[currentReginTextIndexPlayerTwo];
+        switch (currentReginTextIndexPlayerTwo)
+        {
+            case 0:
+                TeamsManager.Instance.PlayerTwoIndex = northStart;
+                break;
+            case 1:
+                TeamsManager.Instance.PlayerTwoIndex = southStart;
+                break;
+            case 2:
+                TeamsManager.Instance.PlayerTwoIndex = westStart;
+                break;
+            case 3:
+                TeamsManager.Instance.PlayerTwoIndex = eastStart;
+                break;
+        }
+        UpdatePlayerTwoUI();
+
+    }
+    public void PreviousReginPlayerTwo()
+    {
+        currentReginTextIndexPlayerTwo = (currentReginTextIndexPlayerTwo - 1 + Regins.Length) % Regins.Length;
+        reginTextPlayerTwo.text = Regins[currentReginTextIndexPlayerTwo];
+        switch (currentReginTextIndexPlayerTwo)
+        {
+            case 0:
+                TeamsManager.Instance.PlayerTwoIndex = northStart;
+                break;
+            case 1:
+                TeamsManager.Instance.PlayerTwoIndex = southStart;
+                break;
+            case 2:
+                TeamsManager.Instance.PlayerTwoIndex = westStart;
+                break;
+            case 3:
+                TeamsManager.Instance.PlayerTwoIndex = eastStart;
+                break;
+        }
+        UpdatePlayerTwoUI();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void Play()
     {
@@ -246,9 +333,6 @@ public class MenuController : MonoBehaviour
         // Update the text to the current stadium
         stadiumText.text = stadiums[currentStadiumTextIndex];
     }
-
-
-    // Method to show the previous stadium
     public void PreviousStadium()
     {
         // Decrement the index and wrap around if needed
@@ -284,10 +368,28 @@ public class MenuController : MonoBehaviour
         }
         else
         {
-            currentSkinTwoTextIndex = (currentSkinTwoTextIndex + 1) % skinsTwo.Length;
+            currentSkinTwoTextIndex = (currentSkinTwoTextIndex + 1) % skins.Length;
 
             // Update the text to the current stadium
-            skinTwoText.text = skinsTwo[currentSkinTwoTextIndex];
+            skinTwoText.text = skins[currentSkinTwoTextIndex];
+        }
+
+    }
+    public void NextSkinGoal(bool isPlayerOne)
+    {
+        if (isPlayerOne)
+        {// Increment the index and wrap around if needed
+            currentSkinTextIndexGoal = (currentSkinTextIndexGoal + 1) % skins.Length;
+
+            // Update the text to the current stadium
+            skinTextGoal.text = skins[currentSkinTextIndexGoal];
+        }
+        else
+        {
+            currentSkinTextIndexGoalPlayerTwo = (currentSkinTextIndexGoalPlayerTwo + 1) % skins.Length;
+
+            // Update the text to the current stadium
+            skinTextPlayerTwoGoal.text = skins[currentSkinTextIndexGoalPlayerTwo];
         }
 
     }
@@ -299,101 +401,35 @@ public class MenuController : MonoBehaviour
             currentSkinTextIndex = (currentSkinTextIndex - 1 + skins.Length) % skins.Length;
 
             // Update the text to the current stadium
-            skinText.text = skins[currentSkinTwoTextIndex];
+            skinText.text = skins[currentSkinTextIndex];
         }
         else
         {
             // Decrement the index and wrap around if needed
-            currentSkinTwoTextIndex = (currentSkinTwoTextIndex - 1 + skinsTwo.Length) % skinsTwo.Length;
+            currentSkinTwoTextIndex = (currentSkinTwoTextIndex - 1 + skins.Length) % skins.Length;
 
             // Update the text to the current stadium
-            skinTwoText.text = skinsTwo[currentSkinTwoTextIndex];
+            skinTwoText.text = skins[currentSkinTwoTextIndex];
         }
     }
-    public void NextRegin()
+    public void PreviousSkinGoal(bool isPlayerOne)
     {
-        currentReginTextIndex = (currentReginTextIndex + 1) % Regins.Length;
-        reginText.text = Regins[currentReginTextIndex];
-        switch (currentReginTextIndex)
+        if (isPlayerOne)
         {
-            case 0:
-                TeamsManager.Instance.PlayerOneIndex = 0;
-                break;
-            case 1:
-                TeamsManager.Instance.PlayerOneIndex = 21;
-                break;
-            case 2:
-                TeamsManager.Instance.PlayerOneIndex = 44;
-                break;
-            case 3:
-                TeamsManager.Instance.PlayerOneIndex = 63;
-                break;
-        }
-        UpdatePlayerOneUI();
+            // Decrement the index and wrap around if needed
+            currentSkinTextIndexGoal = (currentSkinTextIndexGoal - 1 + skins.Length) % skins.Length;
 
-    }
-    public void PreviousRegin()
-    {
-        currentReginTextIndex = (currentReginTextIndex - 1 + Regins.Length) % Regins.Length;
-        reginText.text = Regins[currentReginTextIndex];
-        switch (currentReginTextIndex)
-        {
-            case 0:
-                TeamsManager.Instance.PlayerOneIndex = 0;
-                break;
-            case 1:
-                TeamsManager.Instance.PlayerOneIndex = 21;
-                break;
-            case 2:
-                TeamsManager.Instance.PlayerOneIndex = 44;
-                break;
-            case 3:
-                TeamsManager.Instance.PlayerOneIndex = 63;
-                break;
+            // Update the text to the current stadium
+            skinTextGoal.text = skins[currentSkinTextIndexGoal];
         }
-        UpdatePlayerOneUI();
-    }
-    public void NextReginPlayerTwo()
-    {
-        currentReginTextIndexPlayerTwo = (currentReginTextIndexPlayerTwo + 1) % Regins.Length;
-        reginTextPlayerTwo.text = Regins[currentReginTextIndexPlayerTwo];
-        switch (currentReginTextIndexPlayerTwo)
+        else
         {
-            case 0:
-                TeamsManager.Instance.PlayerTwoIndex = 0;
-                break;
-            case 1:
-                TeamsManager.Instance.PlayerTwoIndex = 21;
-                break;
-            case 2:
-                TeamsManager.Instance.PlayerTwoIndex = 44;
-                break;
-            case 3:
-                TeamsManager.Instance.PlayerTwoIndex = 63;
-                break;
-        }
-        UpdatePlayerTwoUI();
+            // Decrement the index and wrap around if needed
+            currentSkinTextIndexGoalPlayerTwo = (currentSkinTextIndexGoalPlayerTwo - 1 + skins.Length) % skins.Length;
 
-    }
-    public void PreviousReginPlayerTwo()
-    {
-        currentReginTextIndexPlayerTwo = (currentReginTextIndexPlayerTwo - 1 + Regins.Length) % Regins.Length;
-        reginTextPlayerTwo.text = Regins[currentReginTextIndexPlayerTwo];
-        switch (currentReginTextIndexPlayerTwo)
-        {
-            case 0:
-                TeamsManager.Instance.PlayerTwoIndex = 0;
-                break;
-            case 1:
-                TeamsManager.Instance.PlayerTwoIndex = 21;
-                break;
-            case 2:
-                TeamsManager.Instance.PlayerTwoIndex = 44;
-                break;
-            case 3:
-                TeamsManager.Instance.PlayerTwoIndex = 63;
-                break;
+            // Update the text to the current stadium
+            skinTextPlayerTwoGoal.text = skins[currentSkinTextIndexGoalPlayerTwo];
         }
-        UpdatePlayerTwoUI();
     }
+
 }

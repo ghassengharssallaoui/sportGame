@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55df23053d5c048d8a7618f1107d10eb, type: 3}
   m_Name: SpellBook
   m_EditorClassIdentifier: 
-  abilityName: Spell Book
+  abilityName: Random Super Star
   cooldown: 3
-  duration: 10
+  duration: 5
   availableAbilities:
   - {fileID: 11400000, guid: a5152e8c0537f4cf8a11b9f3c83fa005, type: 2}
   - {fileID: 11400000, guid: 66c4b2ae226b14738aa6c210cb53a6b9, type: 2}

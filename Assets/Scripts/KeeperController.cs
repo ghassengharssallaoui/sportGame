@@ -12,11 +12,11 @@ public class KeeperController : MonoBehaviour
     {
         if (tag == "PlayerOne")
         {
-            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].skins[3];
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].skins[MenuController.Instance.currentSkinTextIndexGoal];
         }
         else
         {
-            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].skins[3];
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].skins[MenuController.Instance.currentSkinTextIndexGoalPlayerTwo];
 
         }
     }
