@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    bool collidedWithPlayerOneKeeper = true;
     [SerializeField]
     [Range(0f, 1f)]
     // float ballDragAfterWallHit = 0.5f;
@@ -133,8 +134,10 @@ public class BallController : MonoBehaviour
             {
                 if (applyImpactForce)
                 {
-
-                    ballRigidbody.velocity += ballRigidbody.velocity.normalized * impactForce;
+                    if (collidedWithPlayerOneKeeper)
+                        ballRigidbody.velocity += ballRigidbody.velocity.normalized * impactForce * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].defense / 5;
+                    else
+                        ballRigidbody.velocity += ballRigidbody.velocity.normalized * impactForce * TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].defense / 5;
                     applyImpactForce = false; // Ensure the force is applied only once
                 }
 
@@ -151,9 +154,9 @@ public class BallController : MonoBehaviour
             if (collision.gameObject.name.Contains("Keeper"))
             {
                 if (collision.gameObject.tag == "PlayerOne")
-                    impactForce *= TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].defense / 5;
+                    collidedWithPlayerOneKeeper = true;
                 else
-                    impactForce *= TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].defense / 5;
+                    collidedWithPlayerOneKeeper = false;
                 decreaseBallVelocity = true;
                 applyImpactForce = true; // Ready to apply impact force
             }

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Magpies
+  m_EditorClassIdentifier: 
+  name: COTTESLOE MAGPIES
+  badge: {fileID: 1950624535, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1213126123, guid: 840ccf35e01344c31b5017ccde954a6c, type: 3}
+  - {fileID: 763804571, guid: 840ccf35e01344c31b5017ccde954a6c, type: 3}
+  - {fileID: 669717075, guid: 840ccf35e01344c31b5017ccde954a6c, type: 3}
+  - {fileID: 1684495126, guid: 840ccf35e01344c31b5017ccde954a6c, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: a5152e8c0537f4cf8a11b9f3c83fa005, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
+  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
+  - {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}

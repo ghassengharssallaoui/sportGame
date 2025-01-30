@@ -31,6 +31,9 @@ public class GameManager : MonoBehaviour
     public Image powerOne, powerOnePlayerTwo;
     public Image powerTwo, powerTwoPlayerTwo;
     public Image powerThree, powerThreePlayerTwo;
+    public Image powerOneshot, powerOnePlayerTwoshot;
+    public Image powerTwoshot, powerTwoPlayerTwoshot;
+    public Image powerThreeshot, powerThreePlayerTwoshot;
 
     [SerializeField]
     private Sprite[] abilitiesSprites;
@@ -91,8 +94,8 @@ public class GameManager : MonoBehaviour
         teamsManager = TeamsManager.Instance;
         slidersController.LoadSettings();
         TransitionToState(GameState.WaitingForStart);
-        playerOne.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].skin;
-        playerTwo.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].skin;
+        playerOne.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].skins[MenuController.Instance.currentSkinTextIndex];
+        playerTwo.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].skins[MenuController.Instance.currentSkinTwoTextIndex];
         playerOneUiBage.sprite = teamsManager.Teams[teamsManager.PlayerOneIndex].badge;
         playerTwoUiBage.sprite = teamsManager.Teams[teamsManager.PlayerTwoIndex].badge;
         // playOnePowerOneUi = teamsManager.Teams[teamsManager.PlayerTwoIndex].badge;
@@ -120,7 +123,9 @@ public class GameManager : MonoBehaviour
         };
 
         AssignPlayerOnePowerSprites();
+        AssignPlayerOnePowerSpritesShot();
         AssignPlayerTwoPowerSprites();
+        AssignPlayerTwoPowerSpritesShot();
 
 
     }
@@ -418,9 +423,48 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Ability name not recognized: " + abilityName);
         }
     }
-
-
-
+    private void AssignPlayerOnePowerSpritesShot()
+    {
+        string abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].oneShotAbilities[0].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite assignedSprite))
+        {
+            powerOneshot.sprite = assignedSprite;
+        }
+        abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].oneShotAbilities[1].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite assin))
+        {
+            powerTwoshot.sprite = assin;
+        }
+        abilityName = teamsManager.Teams[teamsManager.PlayerOneIndex].oneShotAbilities[2].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite assing))
+        {
+            powerThreeshot.sprite = assing;
+        }
+    }
+    private void AssignPlayerTwoPowerSpritesShot()
+    {
+        string abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].oneShotAbilities[0].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite prt))
+        {
+            powerOnePlayerTwoshot.sprite = prt;
+        }
+        abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].oneShotAbilities[1].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite sprt))
+        {
+            powerTwoPlayerTwoshot.sprite = sprt;
+        }
+        abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].oneShotAbilities[2].abilityName;
+        //        Debug.Log("" + abilityName);
+        if (abilitySprites.TryGetValue(abilityName, out Sprite sprite))
+        {
+            powerThreePlayerTwoshot.sprite = sprite;
+        }
+    }
     private void AssignPlayerTwoPowerSprites()
     {
         string abilityName = teamsManager.Teams[teamsManager.PlayerTwoIndex].reusableAbility.abilityName;
@@ -436,7 +480,5 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Ability name not recognized: " + abilityName);
         }
     }
-
-
 
 }

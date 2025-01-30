@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Crows
+  m_EditorClassIdentifier: 
+  name: HARRISDALE CROWS
+  badge: {fileID: -1240524339, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -806782482, guid: 745d2884010f8413a9e00a571dee308a, type: 3}
+  - {fileID: 875501873, guid: 745d2884010f8413a9e00a571dee308a, type: 3}
+  - {fileID: 1247125765, guid: 745d2884010f8413a9e00a571dee308a, type: 3}
+  - {fileID: 516745275, guid: 745d2884010f8413a9e00a571dee308a, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 66c4b2ae226b14738aa6c210cb53a6b9, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 5ebeb8c62a0a84c2ca9c1160c4b13fbc, type: 2}
+  - {fileID: 11400000, guid: 66c4b2ae226b14738aa6c210cb53a6b9, type: 2}
+  - {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}

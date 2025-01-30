@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
-  m_Name: PANTHERS
+  m_Name: Panthers
   m_EditorClassIdentifier: 
   name: MOUNT LAWLEY PANTHERS
-  badge: {fileID: 629194435, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
-  skin: {fileID: -920628552, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
-  speed: 8
+  badge: {fileID: -915919216, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1056214333, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: -2082453577, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: 1177720186, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: 995944110, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  speed: 5
   strength: 5
-  attack: 4
-  defense: 6
-  durability: 8
-  reusableAbility: {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
   oneShotAbilities:
-  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
-  - {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
-  - {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
+  - {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}
+  - {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}
+  - {fileID: 11400000, guid: a4e8c84277655481c9597b22049a473a, type: 2}

@@ -6,7 +6,7 @@ public class Team : ScriptableObject
 {
     public new string name;
     public Sprite badge;
-    public Sprite skin;
+    public Sprite[] skins = new Sprite[4];
     public float speed;
     public float strength;
     public float attack;

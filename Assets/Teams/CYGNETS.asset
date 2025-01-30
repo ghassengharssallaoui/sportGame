@@ -10,18 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
-  m_Name: CYGNETS
+  m_Name: Cygnets
   m_EditorClassIdentifier: 
   name: UPPER SWAN CYGNETS
-  badge: {fileID: -924861280, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
-  skin: {fileID: 974131006, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
+  badge: {fileID: 970206588, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1008766062, guid: b80c4a0f1b62347ec9b51a38d15c168f, type: 3}
+  - {fileID: -1260337852, guid: b80c4a0f1b62347ec9b51a38d15c168f, type: 3}
+  - {fileID: -1539253350, guid: b80c4a0f1b62347ec9b51a38d15c168f, type: 3}
+  - {fileID: 1028241378, guid: b80c4a0f1b62347ec9b51a38d15c168f, type: 3}
   speed: 5
   strength: 5
-  attack: 1
-  defense: 9
+  attack: 5
+  defense: 5
   durability: 5
-  reusableAbility: {fileID: 11400000, guid: 054b91bf211ef48929350e4d451b3aa3, type: 2}
+  reusableAbility: {fileID: 11400000, guid: cf5dadf11d3164db98b124725b309036, type: 2}
   oneShotAbilities:
-  - {fileID: 11400000, guid: b3512384e05aa4ea5b771f859aeada4e, type: 2}
-  - {fileID: 11400000, guid: 0a7eae6fb3d504b15a53b61dc6e02cdb, type: 2}
-  - {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}
+  - {fileID: 11400000, guid: a4e8c84277655481c9597b22049a473a, type: 2}
+  - {fileID: 11400000, guid: bac8516a4225e43b8b7177edbd5b7685, type: 2}
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}

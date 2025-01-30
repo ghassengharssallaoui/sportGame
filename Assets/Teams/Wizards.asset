@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Wizards
+  m_EditorClassIdentifier: 
+  name: FLOREAT WIZARDS
+  badge: {fileID: 2117086577, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: 1411399715, guid: 4c0ec69f9d7ed45318348389fbd70126, type: 3}
+  - {fileID: 1127784962, guid: 4c0ec69f9d7ed45318348389fbd70126, type: 3}
+  - {fileID: 1194316649, guid: 4c0ec69f9d7ed45318348389fbd70126, type: 3}
+  - {fileID: 547671567, guid: 4c0ec69f9d7ed45318348389fbd70126, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 7e3cf23e855404891aac7eac557e0258, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
+  - {fileID: 11400000, guid: 054b91bf211ef48929350e4d451b3aa3, type: 2}

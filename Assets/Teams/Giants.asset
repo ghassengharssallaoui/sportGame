@@ -13,15 +13,19 @@ MonoBehaviour:
   m_Name: Giants
   m_EditorClassIdentifier: 
   name: KELMSCOTT GIANTS
-  badge: {fileID: 21558931, guid: 5cd5cdfbe32304a198d84b77bf69a482, type: 3}
-  skin: {fileID: -1764009080, guid: 3f711c426a4b44b998fc4a8cef8a4fbe, type: 3}
+  badge: {fileID: 408478879, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1464700104, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: -228937684, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: -824798633, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
+  - {fileID: -2139709091, guid: 15c6ee4feb2fc469e91f0af3e9501396, type: 3}
   speed: 5
   strength: 5
-  attack: 9
-  defense: 1
+  attack: 5
+  defense: 5
   durability: 5
-  reusableAbility: {fileID: 11400000, guid: 580c3f63a477e4158983b6d865fea713, type: 2}
+  reusableAbility: {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
   oneShotAbilities:
+  - {fileID: 11400000, guid: b3512384e05aa4ea5b771f859aeada4e, type: 2}
+  - {fileID: 11400000, guid: f8756a72e157d46669813574d24cb032, type: 2}
   - {fileID: 11400000, guid: 631c00f6753064f498db3e9d469ccd9a, type: 2}
-  - {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}
-  - {fileID: 11400000, guid: bac8516a4225e43b8b7177edbd5b7685, type: 2}

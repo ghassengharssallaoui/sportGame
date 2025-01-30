@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Redbacks
+  m_EditorClassIdentifier: 
+  name: OSBORNE PARK REDBACKS
+  badge: {fileID: -214186936, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: 1433903344, guid: 3cf93f3c4b782493a936dca115ef1aa2, type: 3}
+  - {fileID: -1415694406, guid: 3cf93f3c4b782493a936dca115ef1aa2, type: 3}
+  - {fileID: -898871124, guid: 3cf93f3c4b782493a936dca115ef1aa2, type: 3}
+  - {fileID: 1041250330, guid: 3cf93f3c4b782493a936dca115ef1aa2, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 03ccd78b90ab547fc95508bf89c278a1, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 98c8773195a5d46abb697be6aed0f1e8, type: 2}
+  - {fileID: 11400000, guid: bac8516a4225e43b8b7177edbd5b7685, type: 2}
+  - {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Gold
+  m_EditorClassIdentifier: 
+  name: GWELUP GOLD
+  badge: {fileID: -1772592959, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1454606680, guid: b93fbc42b32ef40609164034bd6874d4, type: 3}
+  - {fileID: 136389094, guid: b93fbc42b32ef40609164034bd6874d4, type: 3}
+  - {fileID: 802979197, guid: b93fbc42b32ef40609164034bd6874d4, type: 3}
+  - {fileID: -126608118, guid: b93fbc42b32ef40609164034bd6874d4, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
+  - {fileID: 11400000, guid: 98c8773195a5d46abb697be6aed0f1e8, type: 2}
+  - {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}

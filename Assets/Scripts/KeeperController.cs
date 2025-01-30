@@ -8,6 +8,18 @@ public class KeeperController : MonoBehaviour
     [SerializeField] float minY = -1.5f; // Minimum Y position
     [SerializeField] float maxY = 1.5f; // Maximum Y position
     float newY;
+    void Start()
+    {
+        if (tag == "PlayerOne")
+        {
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerOneIndex].skins[3];
+        }
+        else
+        {
+            transform.GetChild(0).GetComponent<SpriteRenderer>().sprite = TeamsManager.Instance.Teams[TeamsManager.Instance.PlayerTwoIndex].skins[3];
+
+        }
+    }
     void Update()
     {
         // Calculate new Y position

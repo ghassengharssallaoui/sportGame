@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Redhawks
+  m_EditorClassIdentifier: 
+  name: YANCHEP REDHAWKS
+  badge: {fileID: -2052521154, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -2116379480, guid: dc01fb7939c6e45b6bb7d5470d81cad5, type: 3}
+  - {fileID: 1736630197, guid: dc01fb7939c6e45b6bb7d5470d81cad5, type: 3}
+  - {fileID: 167646123, guid: dc01fb7939c6e45b6bb7d5470d81cad5, type: 3}
+  - {fileID: -809829953, guid: dc01fb7939c6e45b6bb7d5470d81cad5, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: 66c4b2ae226b14738aa6c210cb53a6b9, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}
+  - {fileID: 11400000, guid: 2ef74ba19dc6d490ab2df495dc9ab470, type: 2}

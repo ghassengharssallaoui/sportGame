@@ -47,3 +47,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: keeperOne
+    uniqueID: 1994678377
+    locked: 0
+  - name: KeeperTwo
+    uniqueID: 2157446521
+    locked: 0
+  - name: PlayerOne
+    uniqueID: 2296776867
+    locked: 0
+  - name: PlayerTwo
+    uniqueID: 1100974115
+    locked: 0
+  - name: UI
+    uniqueID: 3905077917
+    locked: 0

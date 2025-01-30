@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7613bff9a6ce640d28e9c92b51f70386, type: 3}
+  m_Name: Mutants
+  m_EditorClassIdentifier: 
+  name: MIRRABOOKA MUTANTS
+  badge: {fileID: 110553609, guid: 92550ad8d85074c5ebc1b7f27ccda665, type: 3}
+  skins:
+  - {fileID: -1393862399, guid: b94d84d7eca0f41c4a626b49032432ac, type: 3}
+  - {fileID: -1647165314, guid: b94d84d7eca0f41c4a626b49032432ac, type: 3}
+  - {fileID: -1996315369, guid: b94d84d7eca0f41c4a626b49032432ac, type: 3}
+  - {fileID: -609126320, guid: b94d84d7eca0f41c4a626b49032432ac, type: 3}
+  speed: 5
+  strength: 5
+  attack: 5
+  defense: 5
+  durability: 5
+  reusableAbility: {fileID: 11400000, guid: dbbb83386fd014c39a2d50286727a479, type: 2}
+  oneShotAbilities:
+  - {fileID: 11400000, guid: 00472cf4ae03d40e999240545f2cc2e4, type: 2}
+  - {fileID: 11400000, guid: a018342bb30d34a4ab8c1a7dbe90f111, type: 2}
+  - {fileID: 11400000, guid: 5ebeb8c62a0a84c2ca9c1160c4b13fbc, type: 2}

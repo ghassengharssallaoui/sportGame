@@ -8,6 +8,8 @@ public class AbilityManager : MonoBehaviour
     int j = 0;
     [SerializeField]
     private GameObject powerOnePlayerOne, powerTwoPlayerOne, powerThreePlayerOne, powerOnePlayerTwo, powerTwoPlayerTwo, powerThreePlayerTwo; [SerializeField] private float cooldDownBetweenOneShotAbilities = 5f;
+    [SerializeField]
+    private GameObject powerOnePlayerOneShot, powerTwoPlayerOneShot, powerThreePlayerOneShot, powerOnePlayerTwoShot, powerTwoPlayerTwoShot, powerThreePlayerTwoShot;
     private bool canActivateNextOneShotPlayerOne = true;
     private bool canActivateNextOneShotPlayerTwo = true;
     [SerializeField] private GameObject playerOne, playerTwo, ball;
@@ -69,6 +71,18 @@ public class AbilityManager : MonoBehaviour
 
         if (currentOneShotIndexPlayerOne < playerOneTeam.oneShotAbilities.Count)
         {
+            if (powerOnePlayerOneShot.activeSelf)
+            {
+                powerOnePlayerOneShot.SetActive(false);
+            }
+            else if (powerTwoPlayerOneShot.activeSelf)
+            {
+                powerTwoPlayerOneShot.SetActive(false);
+            }
+            else if (powerThreePlayerOneShot.activeSelf)
+            {
+                powerThreePlayerOneShot.SetActive(false);
+            }
             BaseAbility ability = playerOneTeam.oneShotAbilities[currentOneShotIndexPlayerOne];
             ability.Execute(player, ball);
             StartCoroutine(DisplayAbilityText(playerOneAbilityText, ability.abilityName));
@@ -84,6 +98,21 @@ public class AbilityManager : MonoBehaviour
 
         if (currentOneShotIndexPlayerTwo < playerTwoTeam.oneShotAbilities.Count)
         {
+
+            if (powerOnePlayerTwoShot.activeSelf)
+            {
+                powerOnePlayerTwoShot.SetActive(false);
+            }
+            else if (powerTwoPlayerTwoShot.activeSelf)
+            {
+                powerTwoPlayerTwoShot.SetActive(false);
+            }
+            else if (powerThreePlayerTwoShot.activeSelf)
+            {
+                powerThreePlayerTwoShot.SetActive(false);
+            }
+
+
             BaseAbility ability = playerTwoTeam.oneShotAbilities[currentOneShotIndexPlayerTwo];
             ability.Execute(player, ball);
             StartCoroutine(DisplayAbilityText(playerTwoAbilityText, ability.abilityName));
@@ -97,6 +126,7 @@ public class AbilityManager : MonoBehaviour
     {
         if (playerOneTeam.reusableAbility != null && !playerOneAbilityOnCooldown && playerOneReusableAbilityUses < maxReusableAbilityUses)
         {
+
             if (powerOnePlayerOne.activeSelf)
             {
                 powerOnePlayerOne.SetActive(false);
